@@ -3,25 +3,21 @@
 function concat_for_fabric() {
   local file
   for file in "${1:-.}"/*; do
-    if [[ -d "$file" ]]; then
-      echo -e "\n=== $file ===\n";
-      echo "Directory"
-    else
-      echo -e "\n=== $file ===\n";
-      cat "$file";
-      fi
+    if [[ -f "$file" ]]; then
+      echo -e "\n=== $file ===\n"
+      cat "$file"
+    fi
   done
 }
 function concat_for_fabric_recursive() {
   local file
   for file in "${1:-.}"/*; do
     if [[ -d "$file" ]]; then
-      echo -e "\n=== $file ===\n";
-      echo "Directory"
       concat_for_fabric_recursive "$file"
     else
-      echo -e "\n=== $file ===\n";
-      cat "$file";
+      echo -e "\n=== $file ===\n"
+      cat "$file"
+      echo
       fi
   done
 }

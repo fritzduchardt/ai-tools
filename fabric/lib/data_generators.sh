@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-set -eo pipefail
-
 # Input format: Lines starting with "FILENAME: " indicate new output file
 # All subsequent lines are written to that file until next FILENAME: marker
 function generate_from_filelist() {
