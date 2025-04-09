@@ -17,6 +17,7 @@ alias aik="lib::exec_linux_tool $SCRIPT_DIR/fabric fabric.sh -k"
 alias {aig,ai-general-question}="lib::exec_linux_tool $SCRIPT_DIR/fabric fabric.sh -p general"
 alias {aiq,ai-devops-question}="lib::exec_linux_tool $SCRIPT_DIR/fabric fabric.sh -p devops_question"
 alias {aic,ai-chat}="lib::exec_linux_tool $SCRIPT_DIR/fabric fabric.sh -c"
+alias {aicc,ai-chat-command}="lib::exec_linux_tool $SCRIPT_DIR/fabric fabric.sh -x -c -p devops_cmd"
 alias {aicmd,ai-cmd}="lib::exec_linux_tool $SCRIPT_DIR/fabric fabric.sh -x -p devops_cmd"
 
 # generate code single file
@@ -63,7 +64,7 @@ alias {model-ollama-codestral,moc}="export DEFAULT_MODEL=codestral:22b DEFAULT_V
 alias {model-ollama-deepseek,mod}="export DEFAULT_MODEL=deepseek-r1:14b DEFAULT_VENDOR=Ollama EXTRA_AI_OPTS="
 alias {model-ollama-gemma,mog}="export DEFAULT_MODEL=gemma3:12b DEFAULT_VENDOR=Ollama EXTRA_AI_OPTS="
 alias {model-ollama-mistral,mom}="export DEFAULT_MODEL=mistral-small:22b DEFAULT_VENDOR=Ollama EXTRA_AI_OPTS?"
-alias {model-claude,mc}="export DEFAULT_MODEL=claude-3-7-sonnet-latest DEFAULT_VENDOR=Anthropic EXTRA_AI_OPTS="
-alias {model-chatgpt,mg}="export DEFAULT_MODEL=gpt-4 DEFAULT_VENDOR=OpenAI EXTRA_AI_OPTS=-r"
+alias {model-claude,mc}="export DEFAULT_MODEL=claude-3-5-sonnet-latest DEFAULT_VENDOR=Anthropic EXTRA_AI_OPTS="
+alias {model-chatgpt,mg}="export DEFAULT_MODEL=o3-mini DEFAULT_MODEL_CONTEXT_LENGTH=100000 DEFAULT_VENDOR=OpenAI EXTRA_AI_OPTS=-r"
 alias {model-deepseek,md}="export DEFAULT_MODEL=deepseek-reasoner DEFAULT_VENDOR=DeepSeek EXTRA_AI_OPTS="
 alias model="env | grep DEFAULT_MODEL"
