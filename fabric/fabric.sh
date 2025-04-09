@@ -79,6 +79,7 @@ function fbrc() {
 
   # Pattern and session configuration
   if [[ -n "$chat" ]]; then
+    log::info "Starting a chat.."
     fabric_cmd="$(last_fabric)"
     # overwrite pattern
     if [[ -n "$pattern" ]]; then

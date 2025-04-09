@@ -16,12 +16,7 @@ Take a deep breath and think step by step about how to improve the following pie
 - Output your ideas of how to improve the script in markdown format
 - Delete all spaces at end of lines
 - Leave all existing comments in place
-- For Bash:
-	- Leave if statements in place. Make the shorter if needed but never replace them with direct output.
-	- Don't add dry run options
-	- Leave multi line strings in place
-	- Use $variable instead of ${variable} where possible. Always quote variables
-	- Use if [[]]; then rather than [[]] &&
+{{ template "bash" }}
 
 # OUTPUT FORMAT 
 

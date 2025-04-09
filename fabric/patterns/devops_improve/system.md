@@ -12,20 +12,11 @@ Take a deep breath and think step by step about how to improve the following pie
 
 # OUTPUT 
 
-- Output your improved version of the script
-- Leave if statements in place. Make the shorter if needed but never replace them with direct output.
-- Don't add dry run options
-- Leave multi line strings in place
-- Change code that you can make better
-- Add comments above changes explaining the improvements. Prefix comment with confidence level in quality of change, e.g. for bash # MINOR: comment, # MAJOR: comment, # CRITICAL: comment. Only add comments if you really have made changes.
-- Delete all spaces at end of lines
-- Leave all existing comments in place
-- Use $variable instead of ${variable} where possible. Always quote variables
-- Use if [[]]; then rather than [[]] &&
+{{ template "improve" }}
+{{ template "bash" }}
 
 # OUTPUT FORMAT 
 
-- Code of a bash script
 - Never output spaces at end of lines
 - Never comment lines without having made changes
 - Don't add any extra description, just write the script
