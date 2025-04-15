@@ -7,7 +7,7 @@ source "$SCRIPT_DIR/../lib/log.sh"
 source "$SCRIPT_DIR/../lib/utils.sh"
 source "$SCRIPT_DIR/lib/fabric_lib.sh"
 
-FBRC_PATTERNS="$SCRIPT_DIR/patterns"
+FBRC_CONFIG="$HOME/.config/fabric"
 FBRC_BIN="fabric"
 OUTPUT_FILTER=(grep -v "Creating new session:")
 XCLIP_COPY=(xclip -r -sel clip)
@@ -25,7 +25,7 @@ function show_help() {
 }
 
 function fbrc() {
-  local pattern session prompt inputfile overwrite output copy_to_clipboard chat fabric_cmd keep_session
+  local pattern session prompt inputfile overwrite output copy_to_clipboard chat fabric_cmd keep_session track
 
   while [[ "$#" -gt 0 ]]; do
     case "$1" in
@@ -39,6 +39,10 @@ function fbrc() {
         ;;
       -o)
         overwrite="true"
+        shift
+        ;;
+      -t)
+        track="_track"
         shift
         ;;
       -s)
@@ -77,18 +81,23 @@ function fbrc() {
     exit 2
   fi
 
+  # regenerate patterns
+  if ! lib::exec "$SCRIPT_DIR/gomplate.sh"; then
+    log::error "Failed to regenerate patterns"
+  fi
+
   # Pattern and session configuration
   if [[ -n "$chat" ]]; then
     log::info "Starting a chat.."
     fabric_cmd="$(last_fabric)"
-    # overwrite pattern
+    # overwrite pattern if it was provided explicitely
     if [[ -n "$pattern" ]]; then
       fabric_cmd="${fabric_cmd/--pattern */--pattern $pattern}"
     fi
   else
     if [[ -z "$pattern" ]]; then
     # shellcheck disable=SC2012
-    pattern="$(ls "$FBRC_PATTERNS" | fzf --ghost "Pick a pattern" --query=devops_)"
+    pattern="$(ls "$FBRC_CONFIG/patterns" | grep -v "_track" | fzf --ghost "Pick a pattern" --query=private_)"
     fi
     if [[ -z "$session" ]]; then
       if session="$(fabric --listsessions | fzf --ghost "Pick a session" --print-query -e --bind "f2:execute($FBRC_BIN --wipesession {})")"; then
@@ -107,19 +116,22 @@ function fbrc() {
 
   ## Construct the prompt
   # Add general topic
-  prompt="The topic is $session\n"
+  prompt="The topic is: $session\n"
+  local -r current_date="$(date +%Y-%m-%d)"
+  prompt+="The current date is: $current_date\n"
   # Add args to prompt
   if [[ $# -gt 0 ]]; then
-    prompt="$prompt$*"
+    prompt+="User input: $*"
   else
     local prompt_tmp
     read -r -p "Prompt: " prompt_tmp
-    prompt="$prompt$prompt_tmp"
+    prompt+="User input: $prompt_tmp"
   fi
 
   # shellcheck disable=SC2206
   if [[ -z "$fabric_cmd" ]]; then
-    local -a fabric_cmd=("$FBRC_BIN" --stream --session "$session" --pattern "$pattern" $EXTRA_AI_OPTS)
+
+    local -a fabric_cmd=("$FBRC_BIN" --stream --session "$session" --pattern "$pattern$track" $EXTRA_AI_OPTS)
     # store for posterity
     echo "${fabric_cmd[*]}" >> ~/.bash_history
   fi
@@ -147,6 +159,11 @@ function fbrc() {
   fi
   if [[ "$copy_to_clipboard" == "true" ]]; then
     lib::exec "${XCLIP_COPY[@]}" <<<"$output"; echo
+  fi
+
+  if [[ -n "$track" ]]; then
+    local -r track_line="$(tail -n1 <<<"$output")"
+    update_userdata "$FBRC_CONFIG/user-data/$pattern.t" "$current_date" "$track_line"
   fi
 }
 
