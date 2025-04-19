@@ -9,8 +9,10 @@ source "$SCRIPT_DIR/lib/fabric_lib.sh"
 
 FBRC_CONFIG="$HOME/.config/fabric"
 FBRC_BIN="fabric"
+FBRC_CONTEXT_FILE="$FBRC_CONFIG/contexts/general_context.md"
 OUTPUT_FILTER=(grep -v "Creating new session:")
 XCLIP_COPY=(xclip -r -sel clip)
+
 
 function show_help() {
   echo "Usage: fbrc [OPTIONS]"
@@ -24,8 +26,8 @@ function show_help() {
   echo "  -c               Don't reset session."
 }
 
-function fbrc() {
-  local pattern session prompt inputfile overwrite output copy_to_clipboard chat fabric_cmd keep_session track
+fbrc() {
+  local pattern session prompt inputfile overwrite output copy_to_clipboard chat fabric_cmd keep_session
 
   while [[ "$#" -gt 0 ]]; do
     case "$1" in
@@ -39,10 +41,6 @@ function fbrc() {
         ;;
       -o)
         overwrite="true"
-        shift
-        ;;
-      -t)
-        track="_track"
         shift
         ;;
       -s)
@@ -71,6 +69,9 @@ function fbrc() {
     esac
   done
 
+  # make sure everything is generated
+  "$SCRIPT_DIR"/gomplate.sh
+
   # validate input options
   if [[ -n "$inputfile" && ! -f "$inputfile" ]]; then
     log::error "Input file does not exist: $inputfile"
@@ -79,11 +80,6 @@ function fbrc() {
   if [[ "$overwrite" == "true" && -z "$inputfile" ]]; then
     log::error "Input file is required if overwrite option is set."
     exit 2
-  fi
-
-  # regenerate patterns
-  if ! lib::exec "$SCRIPT_DIR/gomplate.sh"; then
-    log::error "Failed to regenerate patterns"
   fi
 
   # Pattern and session configuration
@@ -99,6 +95,7 @@ function fbrc() {
     # shellcheck disable=SC2012
     pattern="$(ls "$FBRC_CONFIG/patterns" | grep -v "_track" | fzf --ghost "Pick a pattern" --query=private_)"
     fi
+    # If session is empty, pick one
     if [[ -z "$session" ]]; then
       if session="$(fabric --listsessions | fzf --ghost "Pick a session" --print-query -e --bind "f2:execute($FBRC_BIN --wipesession {})")"; then
         # pick session and clear it to start with a clean slate
@@ -107,31 +104,29 @@ function fbrc() {
           lib::exec "$FBRC_BIN" --wipesession "$session"
         fi
       fi
+    # If session is auto, generate one
     elif [[ "$session" == "auto" ]]; then
       session="$(create_session)"
       log::debug "Session: $session"
       lib::exec trap "$FBRC_BIN --wipesession=$session" EXIT
     fi
   fi
+  prepare_context "$FBRC_CONTEXT_FILE" "$session"
 
-  ## Construct the prompt
-  # Add general topic
-  prompt="The topic is: $session\n"
-  local -r current_date="$(date +%Y-%m-%d)"
-  prompt+="The current date is: $current_date\n"
   # Add args to prompt
   if [[ $# -gt 0 ]]; then
-    prompt+="User input: $*"
+    prompt="$*\n"
+  # Allow user to input prompt
   else
     local prompt_tmp
     read -r -p "Prompt: " prompt_tmp
-    prompt+="User input: $prompt_tmp"
+    prompt="$prompt_tmp\n"
   fi
 
   # shellcheck disable=SC2206
   if [[ -z "$fabric_cmd" ]]; then
 
-    local -a fabric_cmd=("$FBRC_BIN" --stream --session "$session" --pattern "$pattern$track" $EXTRA_AI_OPTS)
+    local -a fabric_cmd=("$FBRC_BIN" --context "$(basename "$FBRC_CONTEXT_FILE")" --stream --session "$session" --pattern "$pattern$track" $EXTRA_AI_OPTS)
     # store for posterity
     echo "${fabric_cmd[*]}" >> ~/.bash_history
   fi
@@ -159,11 +154,6 @@ function fbrc() {
   fi
   if [[ "$copy_to_clipboard" == "true" ]]; then
     lib::exec "${XCLIP_COPY[@]}" <<<"$output"; echo
-  fi
-
-  if [[ -n "$track" ]]; then
-    local -r track_line="$(tail -n1 <<<"$output")"
-    update_userdata "$FBRC_CONFIG/user-data/$pattern.t" "$current_date" "$track_line"
   fi
 }
 
