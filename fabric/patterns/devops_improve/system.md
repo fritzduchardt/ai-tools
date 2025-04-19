@@ -12,7 +12,6 @@ Take a deep breath and think step by step about how to improve the following pie
 
 # OUTPUT 
 
-{{ template "improve" }}
 {{ template "bash" }}
 
 # OUTPUT FORMAT 
