@@ -28,31 +28,30 @@ alias {aim,ai-multi}="lib::exec_linux_tool $SCRIPT_DIR/fabric fabric_multi.sh"
 alias {aii,ai-improve}="lib::exec_linux_tool $SCRIPT_DIR/fabric fabric.sh -p devops_improve -o"
 alias {aiic,ai-improve-continue}="lib::exec_linux_tool $SCRIPT_DIR/fabric fabric.sh -p devops_improve -c -o"
 alias {aid,ai-doc}="lib::exec_linux_tool $SCRIPT_DIR/fabric fabric_stdin.sh -p devops_document"
-alias {ait,ai-track}="lib::exec_linux_tool $SCRIPT_DIR/fabric fabric.sh -s auto -t"
-alias {aits,ai-track-sleep}="lib::exec_linux_tool $SCRIPT_DIR/fabric fabric.sh -s auto -t -p private_sleep"
-alias {aips,ai-sleep}="lib::exec_linux_tool $SCRIPT_DIR/fabric fabric.sh -s auto -p private_sleep"
-alias {aitc,ai-track-calys}="lib::exec_linux_tool $SCRIPT_DIR/fabric fabric.sh -s auto -t -p private_calys"
-alias {aipc,ai-calys}="lib::exec_linux_tool $SCRIPT_DIR/fabric fabric.sh -s auto -p private_calys"
-alias {aitp,ai-track-people}="lib::exec_linux_tool $SCRIPT_DIR/fabric fabric.sh -s auto -t -p private_people"
-alias {aipp,ai-people}="lib::exec_linux_tool $SCRIPT_DIR/fabric fabric.sh -s auto -p private_people"
+alias ai-sleep="ffo sleep | ai-stdin -p private_sleep -s auto"
+alias ai-calys="ffo sleep | ai-stdin -p private_calys -s auto"
+alias {aip,ai-people}="ai-stdin -p private_people -s auto | glow"
 
 # generate code multiple files
-devops_script_multi() {
+fbrc_multi() {
   local pattern="$1"
   shift 1
   generate_from_filelist < <("$SCRIPT_DIR"/fabric/fabric.sh -s auto -p "$pattern" "$@")
 }
-devops_script_multi_stdin() {
+fbrc_multi_stdin() {
   local pattern="$1"
   shift 1
   generate_from_filelist < <("$SCRIPT_DIR"/fabric/fabric_stdin.sh -s auto -p "$pattern" "$@")
 }
-alias {aicd,ai-create-dir}="devops_script_multi devops_script_multi"
-alias {aiid,ai-improve-dir}="devops_script_multi_stdin devops_improve_multi"
-alias {aiad,ai-amend-dir}="devops_script_multi_stdin devops_amend_multi"
+alias {aicd,ai-create-dir}="fbrc_multi devops_script_multi"
+alias {aiid,ai-improve-dir}="fbrc_multi_stdin devops_improve_multi"
+alias {aiad,ai-amend-dir}="fbrc_multi_stdin devops_amend_multi"
 
 # git
 alias {aigit,ai-git}="lib::exec_linux_tool $SCRIPT_DIR/fabric fabric_stdin.sh -p devops_gitcommit"
+
+# obsidian
+alias {aio,ai-obsidian}="fbrc_multi_stdin obsidian_author"
 
 # data collectors
 source "$SCRIPT_DIR/fabric/lib/data_collectors.sh"
@@ -60,6 +59,7 @@ alias fff="find_for_fabric"
 alias cff="concat_for_fabric"
 alias cffr="concat_for_fabric_recursive"
 alias iff="internet_for_fabric"
+alias ffo="find_for_obsidian"
 
 # data generators
 source "$SCRIPT_DIR/fabric/lib/data_generators.sh"
