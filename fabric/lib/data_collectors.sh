@@ -1,31 +1,52 @@
 #!/usr/bin/env bash
 
-function concat_for_fabric() {
+concat_for_fabric() {
   local file
   for file in "${1:-.}"/*; do
     if [[ -f "$file" ]]; then
-      echo -e "\n=== $file ===\n"
+      echo -e "
+FILENAME: $file
+"
       cat "$file"
     fi
   done
 }
-function concat_for_fabric_recursive() {
+
+concat_for_fabric_recursive() {
   local file
   for file in "${1:-.}"/*; do
     if [[ -d "$file" ]]; then
       concat_for_fabric_recursive "$file"
     else
-      echo -e "\n=== $file ===\n"
+      echo -e "
+FILENAME: $file
+"
       cat "$file"
       echo
-      fi
+    fi
   done
 }
-function find_for_fabric() {
+
+find_for_fabric() {
   local dir="${1:-.}"
   find "$dir" -type f -not -path '*/.*' | grep -v ".*.txt$" | grep -v ".*.md"
 }
-function internet_for_fabric() {
+
+internet_for_fabric() {
   local url="$1"
   curl -s "$url" | lynx -dump -stdin
+}
+
+find_for_obsidian() {
+  local fnd="$1"
+  local file
+  if ! file="$(fd -t file "$fnd" | rg -v conflict)"; then
+    log::error "No file found for $fnd"
+    exit 2
+  fi
+
+  echo -e "
+FILENAME: $file
+"
+  cat "$file"
 }

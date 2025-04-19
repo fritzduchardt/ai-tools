@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-# Input format: Lines starting with "FILENAME: " indicate new output file
+# Input format: Lines starting with "FILENAME:" indicate new output file
 # All subsequent lines are written to that file until next FILENAME: marker
-function generate_from_filelist() {
+generate_from_filelist() {
   local line file_name
   while IFS= read -r line; do
     if [[ "$line" == "FILENAME:"* ]]; then
