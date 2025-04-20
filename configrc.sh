@@ -19,7 +19,7 @@ alias {aiq,ai-devops-question}="lib::exec_linux_tool $SCRIPT_DIR/fabric fabric.s
 alias {aic,ai-chat}="lib::exec_linux_tool $SCRIPT_DIR/fabric fabric.sh -c"
 alias {aicc,ai-chat-command}="lib::exec_linux_tool $SCRIPT_DIR/fabric fabric.sh -x -c -p devops_cmd"
 alias {aicmd,ai-cmd}="lib::exec_linux_tool $SCRIPT_DIR/fabric fabric.sh -x -p devops_cmd"
-alias ai-filename="ai-stdin -x -p general_filename -s auto"
+alias ai-filename="ai-stdin -p general_filename"
 
 # generate code single file
 alias {aiio,ai-stdin}="lib::exec_linux_tool $SCRIPT_DIR/fabric fabric_stdin.sh"
@@ -29,21 +29,21 @@ alias {aim,ai-multi}="lib::exec_linux_tool $SCRIPT_DIR/fabric fabric_multi.sh"
 alias {aii,ai-improve}="lib::exec_linux_tool $SCRIPT_DIR/fabric fabric.sh -p devops_improve -o"
 alias {aiic,ai-improve-continue}="lib::exec_linux_tool $SCRIPT_DIR/fabric fabric.sh -p devops_improve -c -o"
 alias {aid,ai-doc}="lib::exec_linux_tool $SCRIPT_DIR/fabric fabric_stdin.sh -p devops_document"
-alias ai-sleep="ffo sleep | ai-stdin -p private_sleep -s sleep"
-alias ai-calys="ffo sleep | ai-stdin -p private_calys -s calys"
-alias ai-recipes="ffo recipes | ai-stdin -p private_recipes -s recipes | glow"
-alias {aip,ai-people}="ai-stdin -p private_people -s auto | glow"
+alias ai-sleep="ffo sleep | ai-stdin -p private_sleep"
+alias ai-calys="ffo sleep | ai-stdin -p private_calys"
+alias ai-recipes="ffo recipes | ai-stdin -p private_recipes"
+alias {aip,ai-people}="ai-stdin -p private_people"
 
 # generate code multiple files
 fbrc_multi() {
   local pattern="$1"
   shift 1
-  generate_from_filelist < <("$SCRIPT_DIR"/fabric/fabric.sh -s auto -p "$pattern" "$@")
+  generate_from_filelist < <("$SCRIPT_DIR"/fabric/fabric.sh -p "$pattern" "$@")
 }
 fbrc_multi_stdin() {
   local pattern="$1"
   shift 1
-  generate_from_filelist < <("$SCRIPT_DIR"/fabric/fabric_stdin.sh -s auto -p "$pattern" "$@")
+  generate_from_filelist < <("$SCRIPT_DIR"/fabric/fabric_stdin.sh -p "$pattern" "$@")
 }
 alias {aicd,ai-create-dir}="fbrc_multi devops_script_multi"
 alias {aiid,ai-improve-dir}="fbrc_multi_stdin devops_improve_multi"
@@ -59,23 +59,27 @@ fbrc_create_file() {
     log::info "$file already exists"
     exit 2
   fi
+  lib::exec mkdir -p "$(dirname "$file")"
   lib::exec touch "$file"
   log::info "$file created"
 }
 fbrc_store_result() {
   local last_result file_name file_path
-  if ! last_result="$(aic repeat exact same output again)"; then
+  log::info "Getting last AI result"
+  if ! last_result="$(aic print last result again)"; then
     log::error "Could not recall output"
     exit 1
   fi
-  if ! file_name="$(ai-filename <<<"$last_result")"; then
+  log::info "Figuring out file name..."
+  if ! file_name="$(echo "$last_result" | ai-filename)"; then
     exit 1
   fi
-  if ! file_path="$(aiop find path for "$file_name")"; then
-    log::error "Could not recall output"
+  log::info "Figuring out path.."
+  if ! file_path="$(fffr /home/fritz/Sync | aiop figure out path for "$file_name")"; then
+    log::error "Could find path"
     exit 1
   fi
-  if [[ ! "$file_path" =~ ^\w+\/.*$ ]]; then
+  if [[ ! "$file_path" =~ ^(/|/([^/]+)(/[^/]+)*/?)$ ]]; then
     log::error "No file path found: $file_path"
     exit 2
   fi
@@ -84,7 +88,7 @@ fbrc_store_result() {
   cat > "$file_path" <<<"$last_result"
 }
 alias {aio,ai-obsidian}="fbrc_multi_stdin obsidian_author"
-alias {aiop,ai-obsidian-path}="fffr /home/fritz/Sync | ai-stdin -p obsidian_structure -s auto"
+alias {aiop,ai-obsidian-path}="fffr /home/fritz/Sync | ai-stdin -p obsidian_structure"
 alias {aioc,ai-obsidian-create}="fbrc_create_file"
 alias {aios,ai-obsidian-store}="fbrc_store_result"
 
