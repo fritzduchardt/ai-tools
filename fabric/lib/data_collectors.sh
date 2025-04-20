@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+FD_BIN="/usr/local/bin/fd"
+
 concat_for_fabric() {
   local file
   for file in "${1:-.}"/*; do
@@ -28,8 +30,11 @@ FILENAME: $file
 }
 
 find_for_fabric() {
-  local dir="${1:-.}"
-  find "$dir" -type f -not -path '*/.*' | grep -v ".*.txt$" | grep -v ".*.md"
+  "$FD_BIN" . "$@" --max-depth 1 --type f
+}
+
+find_for_fabric_recursive() {
+  "$FD_BIN" . "$@" --type f
 }
 
 internet_for_fabric() {
@@ -40,9 +45,9 @@ internet_for_fabric() {
 find_for_obsidian() {
   local fnd="$1"
   local file
-  if ! file="$(fd -t file "$fnd" | rg -v conflict)"; then
-    log::error "No file found for $fnd"
-    exit 2
+  if ! file="$("$FD_BIN" -t file "$fnd" -1 | rg -v conflict)"; then
+    log::info "No file found for $fnd."
+    return 2
   fi
 
   echo -e "

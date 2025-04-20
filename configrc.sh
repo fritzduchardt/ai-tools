@@ -19,6 +19,7 @@ alias {aiq,ai-devops-question}="lib::exec_linux_tool $SCRIPT_DIR/fabric fabric.s
 alias {aic,ai-chat}="lib::exec_linux_tool $SCRIPT_DIR/fabric fabric.sh -c"
 alias {aicc,ai-chat-command}="lib::exec_linux_tool $SCRIPT_DIR/fabric fabric.sh -x -c -p devops_cmd"
 alias {aicmd,ai-cmd}="lib::exec_linux_tool $SCRIPT_DIR/fabric fabric.sh -x -p devops_cmd"
+alias ai-filename="ai-stdin -x -p general_filename -s auto"
 
 # generate code single file
 alias {aiio,ai-stdin}="lib::exec_linux_tool $SCRIPT_DIR/fabric fabric_stdin.sh"
@@ -28,8 +29,9 @@ alias {aim,ai-multi}="lib::exec_linux_tool $SCRIPT_DIR/fabric fabric_multi.sh"
 alias {aii,ai-improve}="lib::exec_linux_tool $SCRIPT_DIR/fabric fabric.sh -p devops_improve -o"
 alias {aiic,ai-improve-continue}="lib::exec_linux_tool $SCRIPT_DIR/fabric fabric.sh -p devops_improve -c -o"
 alias {aid,ai-doc}="lib::exec_linux_tool $SCRIPT_DIR/fabric fabric_stdin.sh -p devops_document"
-alias ai-sleep="ffo sleep | ai-stdin -p private_sleep -s auto"
-alias ai-calys="ffo sleep | ai-stdin -p private_calys -s auto"
+alias ai-sleep="ffo sleep | ai-stdin -p private_sleep -s sleep"
+alias ai-calys="ffo sleep | ai-stdin -p private_calys -s calys"
+alias ai-recipes="ffo recipes | ai-stdin -p private_recipes -s recipes | glow"
 alias {aip,ai-people}="ai-stdin -p private_people -s auto | glow"
 
 # generate code multiple files
@@ -51,11 +53,45 @@ alias {aiad,ai-amend-dir}="fbrc_multi_stdin devops_amend_multi"
 alias {aigit,ai-git}="lib::exec_linux_tool $SCRIPT_DIR/fabric fabric_stdin.sh -p devops_gitcommit"
 
 # obsidian
+fbrc_create_file() {
+  local -r file="$(aiop "$@")"
+  if [[ -e "$file" ]]; then
+    log::info "$file already exists"
+    exit 2
+  fi
+  lib::exec touch "$file"
+  log::info "$file created"
+}
+fbrc_store_result() {
+  local last_result file_name file_path
+  if ! last_result="$(aic repeat exact same output again)"; then
+    log::error "Could not recall output"
+    exit 1
+  fi
+  if ! file_name="$(ai-filename <<<"$last_result")"; then
+    exit 1
+  fi
+  if ! file_path="$(aiop find path for "$file_name")"; then
+    log::error "Could not recall output"
+    exit 1
+  fi
+  if [[ ! "$file_path" =~ ^\w+\/.*$ ]]; then
+    log::error "No file path found: $file_path"
+    exit 2
+  fi
+  log::info "Storing last result away in $file_path"
+  lib::exec mkdir -p "$(dirname "$file_path")"
+  cat > "$file_path" <<<"$last_result"
+}
 alias {aio,ai-obsidian}="fbrc_multi_stdin obsidian_author"
+alias {aiop,ai-obsidian-path}="fffr /home/fritz/Sync | ai-stdin -p obsidian_structure -s auto"
+alias {aioc,ai-obsidian-create}="fbrc_create_file"
+alias {aios,ai-obsidian-store}="fbrc_store_result"
 
 # data collectors
 source "$SCRIPT_DIR/fabric/lib/data_collectors.sh"
 alias fff="find_for_fabric"
+alias fffr="find_for_fabric_recursive"
 alias cff="concat_for_fabric"
 alias cffr="concat_for_fabric_recursive"
 alias iff="internet_for_fabric"

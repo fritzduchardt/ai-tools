@@ -27,7 +27,7 @@ function show_help() {
 }
 
 fbrc() {
-  local pattern session prompt inputfile overwrite output copy_to_clipboard chat fabric_cmd keep_session
+  local pattern prompt inputfile overwrite output copy_to_clipboard chat fabric_cmd session
 
   while [[ "$#" -gt 0 ]]; do
     case "$1" in
@@ -43,10 +43,6 @@ fbrc() {
         overwrite="true"
         shift
         ;;
-      -s)
-        session="$2"
-        shift 2
-        ;;
       -x)
         copy_to_clipboard=true
         shift
@@ -57,10 +53,6 @@ fbrc() {
         ;;
       -c)
         chat="true"
-        shift 1
-        ;;
-      -k)
-        keep_session="true"
         shift 1
         ;;
       *)
@@ -82,36 +74,22 @@ fbrc() {
     exit 2
   fi
 
-  # Pattern and session configuration
+  # Pattern configuration
+  session="$(create_session)"
+  prepare_context "$FBRC_CONTEXT_FILE"
   if [[ -n "$chat" ]]; then
     log::info "Starting a chat.."
     fabric_cmd="$(last_fabric)"
-    # overwrite pattern if it was provided explicitely
+    # overwrite pattern if it was provided explicitly
     if [[ -n "$pattern" ]]; then
       fabric_cmd="${fabric_cmd/--pattern */--pattern $pattern}"
     fi
   else
     if [[ -z "$pattern" ]]; then
     # shellcheck disable=SC2012
-    pattern="$(ls "$FBRC_CONFIG/patterns" | grep -v "_track" | fzf --ghost "Pick a pattern" --query=private_)"
-    fi
-    # If session is empty, pick one
-    if [[ -z "$session" ]]; then
-      if session="$(fabric --listsessions | fzf --ghost "Pick a session" --print-query -e --bind "f2:execute($FBRC_BIN --wipesession {})")"; then
-        # pick session and clear it to start with a clean slate
-        session="$(tail -n1 <<<"$session")"
-        if [[ -z "$keep_session" ]]; then
-          lib::exec "$FBRC_BIN" --wipesession "$session"
-        fi
-      fi
-    # If session is auto, generate one
-    elif [[ "$session" == "auto" ]]; then
-      session="$(create_session)"
-      log::debug "Session: $session"
-      lib::exec trap "$FBRC_BIN --wipesession=$session" EXIT
+    pattern="$(ls "$FBRC_CONFIG/patterns" | fzf --ghost "Pick a pattern" --query=private_)"
     fi
   fi
-  prepare_context "$FBRC_CONTEXT_FILE" "$session"
 
   # Add args to prompt
   if [[ $# -gt 0 ]]; then
@@ -126,19 +104,19 @@ fbrc() {
   # shellcheck disable=SC2206
   if [[ -z "$fabric_cmd" ]]; then
 
-    local -a fabric_cmd=("$FBRC_BIN" --context "$(basename "$FBRC_CONTEXT_FILE")" --stream --session "$session" --pattern "$pattern$track" $EXTRA_AI_OPTS)
+    local -a fabric_cmd=("$FBRC_BIN" --context "$(basename "$FBRC_CONTEXT_FILE")" --stream --session "$session" --pattern "$pattern" $EXTRA_AI_OPTS)
     # store for posterity
     echo "${fabric_cmd[*]}" >> ~/.bash_history
   fi
 
-  # if input file was provided, add it to prompt
+  # if the input file was provided, add it to prompt
   if [[ -n "$inputfile" ]]; then
     prompt="$prompt: $(cat "$inputfile")"
   fi
 
   # execute fabric
   log::debug "Prompt: $prompt"
-  log::info "Calling the AI.."
+  log::info "Calling the AI.. (${fabric_cmd[*]})"
   # shellcheck disable=SC2068
   if ! output="$(lib::exec ${fabric_cmd[@]} <<<"$prompt" | "${OUTPUT_FILTER[@]}")"; then
     log::error "Failed to call fabric"
