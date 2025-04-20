@@ -4,16 +4,14 @@ KUBECTL_BIN="${KUBECTL_BIN:-kubectl}"
 
 # Execute any binary
 lib::exec() {
-  local command="$1"
-  shift
   if [[ -z "$DRY_RUN" ]] || [[ "$DRY_RUN" != "true" ]]; then
-    log::trace "$command $*"
-    if ! "$command" "$@"; then
-      log::error "Failed to execute: $command $*"
+    log::trace "$*"
+    if ! "$@"; then
+      log::error "Failed to execute: $*"
       return 1
     fi
   else
-    log::info "DRY-RUN: $command $*"
+    log::info "DRY-RUN: $*"
   fi
 }
 
