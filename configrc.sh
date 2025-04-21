@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
 SCRIPT_DIR="$(dirname -- "${BASH_SOURCE[0]:-${0}}")"
+source "$SCRIPT_DIR/fabric/lib/data_collectors.sh"
+OBSIDIAN_PATH=/home/fritz/Sync
 
 lib::exec_linux_tool() {
   local dir="$1" script="$2"
@@ -30,7 +32,8 @@ alias {aii,ai-improve}="lib::exec_linux_tool $SCRIPT_DIR/fabric fabric.sh -p dev
 alias {aiic,ai-improve-continue}="lib::exec_linux_tool $SCRIPT_DIR/fabric fabric.sh -p devops_improve -c -o"
 alias {aid,ai-doc}="lib::exec_linux_tool $SCRIPT_DIR/fabric fabric_stdin.sh -p devops_document"
 alias ai-sleep="ffo sleep | ai-stdin -p private_sleep"
-alias ai-calys="ffo sleep | ai-stdin -p private_calys"
+alias ai-people="ai-stdin -p private_people"
+alias ai-calys="ffo calys | ai-stdin -p private_calys"
 alias ai-recipes="ffo recipes | ai-stdin -p private_recipes"
 alias {aip,ai-people}="ai-stdin -p private_people"
 
@@ -75,7 +78,7 @@ fbrc_store_result() {
     exit 1
   fi
   log::info "Figuring out path.."
-  if ! file_path="$(fffr /home/fritz/Sync | aiop figure out path for "$file_name")"; then
+  if ! file_path="$(fffr "$OBSIDIAN_PATH" | aiop figure out path for "$file_name")"; then
     log::error "Could find path"
     exit 1
   fi
@@ -88,18 +91,17 @@ fbrc_store_result() {
   cat > "$file_path" <<<"$last_result"
 }
 alias {aio,ai-obsidian}="fbrc_multi_stdin obsidian_author"
-alias {aiop,ai-obsidian-path}="fffr /home/fritz/Sync | ai-stdin -p obsidian_structure"
+alias {aiop,ai-obsidian-path}="fffr "$OBSIDIAN_PATH" | ai-stdin -p obsidian_structure"
 alias {aioc,ai-obsidian-create}="fbrc_create_file"
 alias {aios,ai-obsidian-store}="fbrc_store_result"
 
 # data collectors
-source "$SCRIPT_DIR/fabric/lib/data_collectors.sh"
 alias fff="find_for_fabric"
 alias fffr="find_for_fabric_recursive"
 alias cff="concat_for_fabric"
 alias cffr="concat_for_fabric_recursive"
 alias iff="internet_for_fabric"
-alias ffo="find_for_obsidian"
+alias ffo="find_for_obsidian $OBSIDIAN_PATH"
 
 # data generators
 source "$SCRIPT_DIR/fabric/lib/data_generators.sh"

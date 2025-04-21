@@ -1,3 +1,4 @@
 /.idea
 /fabric/patterns/templates/user-data
 /fabric/patterns/private_*
+/fabric/patterns/obsidian_*
