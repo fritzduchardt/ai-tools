@@ -2,6 +2,8 @@
 
 SCRIPT_DIR="$(dirname -- "${BASH_SOURCE[0]:-${0}}")"
 source "$SCRIPT_DIR/fabric/lib/data_collectors.sh"
+source "$SCRIPT_DIR/lib/log.sh"
+source "$SCRIPT_DIR/lib/utils.sh"
 OBSIDIAN_PATH=/home/fritz/Sync
 
 lib::exec_linux_tool() {
