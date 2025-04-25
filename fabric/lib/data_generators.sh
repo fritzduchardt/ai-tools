@@ -8,8 +8,11 @@ generate_from_filelist() {
     if [[ "$line" == "FILENAME:"* ]]; then
       file_name="${line#*FILENAME: }"
       log::info "Writing $file_name"
-      if ! lib::exec truncate -s 0 "$file_name"; then
-        touch "$file_name"
+      if [[ -e "$file_name" ]]; then
+        lib::exec cp "$file_name" "$file_name".backup
+        lib::exec truncate -s 0 "$file_name"
+      else
+        lib::exec touch "$file_name"
       fi
     else
       if [[ -n "$file_name" ]]; then

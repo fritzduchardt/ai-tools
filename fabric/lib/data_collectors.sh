@@ -44,7 +44,7 @@ find_for_obsidian() {
   local search_path="${1:-.}"
   local fnd="$2"
   local file
-  if ! file="$(lib::exec find "$search_path" -type f -iname "*$fnd*")"; then
+  if ! file="$(lib::exec find "$search_path" -type f -iname "*$fnd*.md")"; then
     log::error "No file found for: $fnd"
     return 2
   fi
