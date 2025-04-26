@@ -3,32 +3,28 @@
 SCRIPT_DIR="$(dirname -- "$0")"
 source "$SCRIPT_DIR/../lib/log.sh"
 source "$SCRIPT_DIR/../lib/utils.sh"
-
 concat_for_fabric() {
+  local pattern="${1:-.}"
   local file
-  for file in "${1:-.}"/*; do
-    if [[ -f "$file" ]]; then
-      echo -e "
-FILENAME: $file
-"
-      cat "$file"
-    fi
-  done
-}
-
-concat_for_fabric_recursive() {
-  local file
-  for file in "${1:-.}"/*; do
-    if [[ -d "$file" ]]; then
-      concat_for_fabric_recursive "$file"
-    else
+  while IFS='' read -r file; do
       echo -e "
 FILENAME: $file
 "
       cat "$file"
       echo
-    fi
-  done
+  done < <(fd -d 1 -t file "$pattern")
+}
+
+concat_for_fabric_recursive() {
+  local pattern="${1:-.}"
+  local file
+  while IFS='' read -r file; do
+      echo -e "
+FILENAME: $file
+"
+      cat "$file"
+      echo
+  done < <(fd -t file "$pattern")
 }
 
 find_for_fabric() {
