@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+SCRIPT_DIR="$(dirname -- "$0")"
+source "$SCRIPT_DIR/../lib/log.sh"
+source "$SCRIPT_DIR/../lib/utils.sh"
+
 concat_for_fabric() {
   local file
   for file in "${1:-.}"/*; do
@@ -57,3 +61,15 @@ FILENAME: $file
 "
   lib::exec cat "$file"
 }
+
+case "$1" in
+  concat_for_fabric|concat_for_fabric_recursive|find_for_fabric|find_for_fabric_recursive|internet_for_fabric|find_for_obsidian)
+    action=$1
+    shift
+    "$action" "$@"
+    ;;
+  *)
+    echo "Usage: $0 {concat_for_fabric|concat_for_fabric_recursive|find_for_fabric|find_for_fabric_recursive|internet_for_fabric|find_for_obsidian} [args...]"
+    exit 1
+    ;;
+esac

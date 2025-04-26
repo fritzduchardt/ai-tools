@@ -8,7 +8,6 @@ source "$SCRIPT_DIR/../lib/utils.sh"
 source "$SCRIPT_DIR/lib/fabric_lib.sh"
 
 FBRC_CONFIG="$HOME/.config/fabric"
-FBRC_BIN="fabric"
 FBRC_CONTEXT_FILE="$FBRC_CONFIG/contexts/general_context.md"
 OUTPUT_FILTER=(grep -v "Creating new session:")
 XCLIP_COPY=(xclip -r -sel clip)
@@ -79,7 +78,7 @@ fbrc() {
   prepare_context "$FBRC_CONTEXT_FILE"
   if [[ -n "$chat" ]]; then
     log::info "Starting a chat.."
-    fabric_cmd="$(last_fabric)"
+    last_fabric fabric_cmd
     # overwrite pattern if it was provided explicitly
     if [[ -n "$pattern" ]]; then
       fabric_cmd="${fabric_cmd/--pattern */--pattern $pattern}"
@@ -94,31 +93,28 @@ fbrc() {
   # Add args to prompt
   if [[ $# -gt 0 ]]; then
     prompt="$*\n"
-  # Allow user to input prompt
-  else
-    local prompt_tmp
-    read -r -p "Prompt: " prompt_tmp
-    prompt="$prompt_tmp\n"
   fi
 
   # shellcheck disable=SC2206
   if [[ -z "$fabric_cmd" ]]; then
-
-    local -a fabric_cmd=("$FBRC_BIN" --context "$(basename "$FBRC_CONTEXT_FILE")" --stream --session "$session" --pattern "$pattern" $EXTRA_AI_OPTS)
+    local -a fabric_cmd=(fabric --context "$(basename "$FBRC_CONTEXT_FILE")" --stream --session "$session" --pattern "$pattern" $EXTRA_AI_OPTS)
     # store for posterity
     echo "${fabric_cmd[*]}" >> ~/.bash_history
   fi
 
+  # execute fabric
+  local -a cmd_prefix
   # if the input file was provided, add it to prompt
   if [[ -n "$inputfile" ]]; then
-    prompt="$prompt: $(cat "$inputfile")"
+    cmd_prefix=(sed "1i $prompt:" $inputfile)
+  elif read -r -t0 -n0; then
+    cmd_prefix=(sed "1s/^/$prompt: /")
+  else
+    cmd_prefix=(echo "$prompt")
   fi
 
-  # execute fabric
-  log::debug "Prompt: $prompt"
   log::info "Calling the AI.. (${fabric_cmd[*]})"
-  # shellcheck disable=SC2068
-  if ! output="$(lib::exec ${fabric_cmd[@]} <<<"$prompt" | "${OUTPUT_FILTER[@]}")"; then
+  if ! output="$(lib::exec "${cmd_prefix[@]}" | lib::exec "${fabric_cmd[@]}" | "${OUTPUT_FILTER[@]}")"; then
     log::error "Failed to call fabric"
     log::error "$output"
     exit 1

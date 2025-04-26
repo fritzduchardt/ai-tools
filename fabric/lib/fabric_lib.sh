@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 
 last_fabric() {
-  grep -o -E "^$FBRC_BIN .*" ~/.bash_history | tac | head -n1
-}
-
-last_session() {
-  local -r cmd="$(last_fabric)"
-  echo "$cmd" | grep -o -E "\-\-session \w+" | sed -E "s/--session\s+//"
+  local -n _fabric_cmd=$1
+  local cmd_str elem
+  cmd_str="$(grep -o -E "^fabric .*" ~/.bash_history | tac | head -n1)"
+  for elem in $cmd_str; do
+    _fabric_cmd+=("$elem")
+  done
 }
 
 create_session() {
