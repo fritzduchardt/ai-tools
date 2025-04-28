@@ -17,7 +17,7 @@ alias {aicmd,ai-cmd}="$SCRIPT_DIR/fabric/fabric.sh -x -p devops_cmd"
 alias ai-filename="ai -p general_filename"
 
 # generate code single file
-alias {ais,ai-script}="$SCRIPT_DIR/fabric/fabric.sh -p devops_script"
+alias {aico,ai-code}="$SCRIPT_DIR/fabric/fabric.sh -p devops_code"
 alias {aia,ai-amend}="$SCRIPT_DIR/fabric/fabric.sh -p devops_amend -o"
 alias {aii,ai-improve}="$SCRIPT_DIR/fabric/fabric.sh -p devops_improve -o"
 alias {aiic,ai-improve-continue}="$SCRIPT_DIR/fabric/fabric.sh -p devops_improve -c -o"
@@ -35,7 +35,8 @@ fbrc_multi() {
   shift 1
   "$SCRIPT_DIR"/fabric/data_generators.sh generate_from_filelist < <("$SCRIPT_DIR"/fabric/fabric.sh -p "$pattern" "$@")
 }
-alias {aicd,ai-create-dir}="fbrc_multi devops_script_multi"
+alias {aim,ai-multi}="fbrc_multi"
+alias {aicd,ai-create-dir}="fbrc_multi devops_code_multi"
 alias {aiid,ai-improve-dir}="fbrc_multi devops_improve_multi"
 alias {aiad,ai-amend-dir}="fbrc_multi devops_amend_multi"
 
@@ -71,3 +72,6 @@ alias {model-claude,mc}="export DEFAULT_MODEL=claude-3-7-sonnet-latest DEFAULT_M
 alias {model-chatgpt,mg}="export DEFAULT_MODEL=o4-mini DEFAULT_MODEL_CONTEXT_LENGTH=100000 DEFAULT_VENDOR=OpenAI EXTRA_AI_OPTS=-r"
 alias {model-deepseek,md}="export DEFAULT_MODEL=deepseek-reasoner DEFAULT_VENDOR=DeepSeek EXTRA_AI_OPTS="
 alias model="env | grep DEFAULT_MODEL"
+
+# load current favorite model
+mg

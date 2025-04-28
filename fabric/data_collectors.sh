@@ -12,7 +12,7 @@ FILENAME: $file
 "
       cat "$file"
       echo
-  done < <(fd -d 1 -t file "$pattern")
+  done < <(fd -d 1 -t file "$pattern" | rg -v "\.backup$")
 }
 
 concat_for_fabric_recursive() {
@@ -24,7 +24,7 @@ FILENAME: $file
 "
       cat "$file"
       echo
-  done < <(fd -t file "$pattern")
+  done < <(fd -t file "$pattern" | rg -v "\.backup$")
 }
 
 find_for_fabric() {
