@@ -16,11 +16,4 @@ Take a deep breath and think step by step about how to improve the following pie
 
 # OUTPUT FORMAT
 
-- A list of file names followed by the code for that file
-- file names are prefixed with FILENAME:
-- code is written in raw format without any upfront comment of explanations
-- Example:
-  FILENAME: fileName.txt
-  #!/usr/bin/bash
-
-echo "hello world"
+{{- template "multifile" -}}
