@@ -9,6 +9,24 @@ last_fabric() {
   done
 }
 
+last_session() {
+  local cmd_str session
+  cmd_str="$(grep -o -E "^fabric .*" ~/.bash_history | tac | head -n1)"
+  if [[ "$cmd_str" =~ --session[[:space:]]+([^[:space:]]+) ]]; then
+    session=${BASH_REMATCH[1]}
+    echo "$session"
+  fi
+}
+
+last_result() {
+  local session="$1" session_file
+  session_file="$HOME/.config/fabric/sessions/$session.json"
+  log::info "Session File: $session_file"
+  if [[ -e "$session_file" ]]; then
+    lib::exec jq -r 'map(select(.role=="assistant")) | last.content' <"$session_file"
+  fi
+}
+
 create_session() {
   local session
   session="$(date +%Y%m%d%H%M%S)"

@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
-
 SCRIPT_DIR="$(dirname -- "$0")"
 source "$SCRIPT_DIR/../lib/log.sh"
 source "$SCRIPT_DIR/../lib/utils.sh"
+source "$SCRIPT_DIR/lib/fabric_lib.sh"
+source "$SCRIPT_DIR/../functions.sh"
 
 # Input format: Lines starting with "FILENAME:" indicate new output file
 # All subsequent lines are written to that file until next FILENAME: marker
@@ -42,28 +43,48 @@ create_file() {
 }
 
 store_result() {
-  local last_result file_name file_path
-  log::info "Getting last AI result"
-  if ! last_result="$(aic print last result again)"; then
-    log::error "Could not recall output"
+  local file_name file_path session
+  session="$(last_session)"
+  if [[ -z "$session" ]]; then
+    log::error "No session found"
     exit 1
   fi
-  log::info "Figuring out file name..."
-  if ! file_name="$(echo "$last_result" | ai-filename)"; then
-    exit 1
-  fi
-  log::info "Figuring out path.."
-  if ! file_path="$(fffr "$OBSIDIAN_PATH" | aiop figure out path for "$file_name")"; then
+  if ! file_path="$(last_result "$session" | ai_obsidian_path "")"; then
     log::error "Could find path"
     exit 1
   fi
+  if [[ -z "$file_path" ]]; then
+    log::error "Could not find meaningful file path"
+    exit 2
+  fi
+  log::info "Figured out path: $file_path"
   if [[ ! $file_path =~ ^(/|/([^/]+)(/[^/]+)*/?)$ ]]; then
-    log::error "No file path found: $file_path"
+    log::error "No valid path: $file_path"
     exit 2
   fi
   log::info "Storing last result away in $file_path"
   lib::exec mkdir -p "$(dirname "$file_path")"
-  cat > "$file_path" <<<"$last_result"
+  log::info "Getting last AI result..."
+  if ! last_result "$session" > "$file_path"; then
+    log::error "Could not recall output"
+    exit 1
+  fi
+}
+
+journaling() {
+  local topic="$1"
+  shift 1
+  log::info "Adding to journal.."
+  if ! ffo "$topic" | ai_obsidian "$@"; then
+    log::error "Failed to call AI to author Obsidian file"
+    exit 1
+  fi
+  ffo "$topic" | glow
+  log::info "Giving feedback.."
+  if ! ffo "$topic" | ai -p "private_$topic" | glow; then
+    log::error "Failed to call AI to evaluate Obsidian file"
+    exit 1
+  fi
 }
 
 if [[ $# -lt 1 ]]; then
@@ -72,7 +93,7 @@ if [[ $# -lt 1 ]]; then
 fi
 
 case "$1" in
-  store_result|create_file|generate_from_filelist)
+  store_result|create_file|generate_from_filelist|journaling)
     action=$1
     shift
     "$action" "$@"
