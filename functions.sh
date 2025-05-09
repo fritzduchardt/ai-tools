@@ -18,6 +18,10 @@ ai_general_question() {
   "$SCRIPT_DIR"/fabric/fabric.sh -p general "$@"
 }
 
+ai_general_prompt() {
+  "$SCRIPT_DIR"/fabric/fabric.sh -p general_prompt "$@"
+}
+
 ai_devops_question() {
   "$SCRIPT_DIR"/fabric/fabric.sh -p devops_question "$@"
 }
@@ -54,8 +58,8 @@ ai_multi() {
   "$SCRIPT_DIR"/fabric/data_generators.sh generate_from_filelist < <(ai -p "$pattern" "$@")
 }
 
-ai_code_dir() {
-  ai_multi devops_code "$@"
+ai_code_multi() {
+  "$SCRIPT_DIR"/fabric/data_generators.sh generate_from_filelist true < <(ai -p "devops_code" "$@")
 }
 
 # git
@@ -105,8 +109,8 @@ iff() {
   "$SCRIPT_DIR"/fabric/data_collectors.sh internet_for_fabric "$@"
 }
 
-ffo() {
-  "$SCRIPT_DIR"/fabric/data_collectors.sh find_for_obsidian "$OBSIDIAN_PATH" "$@"
+cfo() {
+  "$SCRIPT_DIR"/fabric/data_collectors.sh concat_for_obsidian "$OBSIDIAN_PATH" "$@"
 }
 
 # data generators
@@ -157,4 +161,4 @@ model() {
 }
 
 # load current favorite model
-model_chatgpt
+model_claude

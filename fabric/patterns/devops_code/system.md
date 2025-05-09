@@ -11,7 +11,4 @@ Write me a program or amend existing code. It is critical that the program you g
 {{ template "golang" }}
 
 # OUTPUT FORMAT
-
-- Write code of the program straight without adding quotes or further comments.
-- Add all comments you have straight into the code
-- Ensure your output can be piped into a file and the file executed without further changes
+{{ template "code" }}

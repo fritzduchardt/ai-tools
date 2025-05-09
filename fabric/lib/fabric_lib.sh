@@ -35,7 +35,7 @@ create_session() {
 
 prepare_context() {
   local user_data_file="$1"
-  local -r current_date="$(date +%Y-%m-%d)"
+  local -r current_date="$(date +%Y-%m-%d\ %H:%M:%S)"
   local output="# CONTEXT\n"
   output+="- The current date is: $current_date\n"
   cat > "$user_data_file" <<< "$(echo -e "$output")"

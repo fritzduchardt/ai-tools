@@ -12,7 +12,7 @@ FILENAME: $file
 "
       cat "$file"
       echo
-  done < <(fd -d 1 -t file "$pattern" | rg -v "\.backup$")
+  done < <(lib::exec fd -E '*.png' -E '*.jpg' -E '*.jpeg' -E '*.gif' -E '*.backup' -d 1 -t file "$pattern")
 }
 
 concat_for_fabric_recursive() {
@@ -24,7 +24,7 @@ FILENAME: $file
 "
       cat "$file"
       echo
-  done < <(fd -t file "$pattern" | rg -v "\.backup$")
+  done < <(lib::exec fd -E '*.png' -E '*.jpg' -E '*.jpeg' -E '*.gif' -E '*.backup' --full-path -t file "$pattern")
 }
 
 find_for_fabric() {
@@ -40,7 +40,7 @@ internet_for_fabric() {
   curl -s "$url" | lynx -dump -stdin
 }
 
-find_for_obsidian() {
+concat_for_obsidian() {
   local search_path="${1:-.}"
   local fnd="$2"
   local file
@@ -59,7 +59,7 @@ FILENAME: $file
 }
 
 case "$1" in
-  concat_for_fabric|concat_for_fabric_recursive|find_for_fabric|find_for_fabric_recursive|internet_for_fabric|find_for_obsidian)
+  concat_for_fabric|concat_for_fabric_recursive|find_for_fabric|find_for_fabric_recursive|internet_for_fabric|concat_for_obsidian)
     action=$1
     shift
     "$action" "$@"
