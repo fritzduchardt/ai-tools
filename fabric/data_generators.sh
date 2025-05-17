@@ -36,7 +36,7 @@ generate_from_filelist() {
 }
 
 create_file() {
-  local -r file="$(aiop "$@")"
+  local -r file="$(ai_obsidian_path "$@")"
   if [[ -e $file ]]; then
     log::info "$file already exists"
     exit 2

@@ -161,4 +161,4 @@ model() {
 }
 
 # load current favorite model
-model_claude
+model_chatgpt
