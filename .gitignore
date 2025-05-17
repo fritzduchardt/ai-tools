@@ -1,4 +1,4 @@
 /.idea
 /fabric/patterns/templates/user-data
 /fabric/patterns/private_*
-/.privaterc.sh
+/privaterc.sh
