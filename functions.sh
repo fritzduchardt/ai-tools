@@ -67,27 +67,6 @@ ai_git() {
   "$SCRIPT_DIR"/fabric/fabric.sh -p devops_gitcommit "$@"
 }
 
-# obsidian
-ai_obsidian() {
-  ai_multi obsidian_author "$@"
-}
-
-ai_obsidian_journaling() {
-  "$SCRIPT_DIR"/fabric/data_generators.sh journaling "$@"
-}
-
-ai_obsidian_path() {
-  ai -p obsidian_path "$@"
-}
-
-ai_obsidian_create_file() {
-  "$SCRIPT_DIR"/fabric/data_generators.sh create_file "$@"
-}
-
-ai_obsidian_store() {
-  "$SCRIPT_DIR"/fabric/data_generators.sh store_result "$@"
-}
-
 # data collectors
 fff() {
   "$SCRIPT_DIR"/fabric/data_collectors.sh find_for_fabric "$@"
@@ -161,4 +140,4 @@ model() {
 }
 
 # load current favorite model
-model_chatgpt
+model_claude

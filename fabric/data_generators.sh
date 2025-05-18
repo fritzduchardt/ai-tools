@@ -13,6 +13,8 @@ generate_from_filelist() {
   while IFS= read -r line; do
     if [[ $line == FILENAME:* ]]; then
       file_name="${line#*FILENAME: }"
+      # strip slashes
+      file_name="${file_name%% *}"
       log::info "Writing $file_name"
       if [[ -e $file_name ]]; then
         if [[ -z "$no_backup" ]]; then
@@ -35,53 +37,41 @@ generate_from_filelist() {
   log::info "Done!"
 }
 
-create_file() {
-  local -r file="$(ai_obsidian_path "$@")"
-  if [[ -e $file ]]; then
-    log::info "$file already exists"
-    exit 2
-  fi
-  lib::exec mkdir -p "$(dirname "$file")"
-  lib::exec touch "$file"
-  log::info "$file created"
-}
-
 store_result() {
-  local file_path session
+  local file_path session result
+  # find session
   session="$(last_session)"
   if [[ -z "$session" ]]; then
     log::error "No session found"
     exit 1
   fi
-  if ! file_path="$(last_result "$session" | ai_obsidian_path "")"; then
-    log::error "Could find path"
-    exit 1
-  fi
-  if [[ -z "$file_path" ]]; then
-    log::error "Could not find meaningful file path"
-    exit 2
-  fi
-  log::info "Storing last result away in $file_path"
-  lib::exec mkdir -p "$(dirname "$file_path")"
-  if ! last_result "$session" > "$file_path"; then
-    log::error "Could not recall output"
-    exit 1
-  fi
-}
+  log::info "Found session: $session"
 
-journaling() {
-  local topic="$1"
-  shift 1
-  log::info "Adding to journal.."
-  if ! cfo "$topic" | ai_obsidian "$@"; then
-    log::error "Failed to call AI to author Obsidian file"
+  # extract last result
+  result="$(last_result "$session")"
+  if [[ -z "$result" ]]; then
+    log::error "No result found"
     exit 1
   fi
-  log::info "Giving feedback.."
-  if ! cfo "$topic" | ai -p "private_$topic"; then
-    log::error "Failed to call AI to evaluate Obsidian file"
+  log::info "Found last result"
+
+  # find file path
+  local -r result_file="$(mktemp)"
+  echo "$result" > "$result_file"
+  local -r file_path="$(grep -o -P "(?<=^FILENAME: )\S+(?=\s*$)" "$result_file")"
+  if [[ -z "$file_path" ]]; then
+    log::error "Result does not contain FILENAME. No idea where to store it."
     exit 1
   fi
+  log::info "Found file path: $file_path"
+
+  # write results
+  lib::exec mkdir -p "$(dirname "$file_path")"
+  if ! sed "/FILENAME:/d" "$result_file" > "$file_path"; then
+    log::error "Could write result"
+    exit 1
+  fi
+  log::info "Stored file successfully"
 }
 
 if [[ $# -lt 1 ]]; then
@@ -90,7 +80,7 @@ if [[ $# -lt 1 ]]; then
 fi
 
 case "$1" in
-  store_result|create_file|generate_from_filelist|journaling)
+  store_result|create_file|generate_from_filelist)
     action=$1
     shift
     "$action" "$@"
