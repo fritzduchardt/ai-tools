@@ -12,9 +12,11 @@ alias aicoc=ai_code_continue
 alias aid=ai_doc
 alias aim=ai_multi
 alias aicm=ai_code_multi
+alias aicmc=ai_code_multi_chat
 
 # AI directory and git commands
 alias aigit=ai_git
+alias aigitcheck=ai_git_check
 
 # Model aliases
 alias moq=model_ollama_qwem

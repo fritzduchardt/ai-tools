@@ -62,9 +62,17 @@ ai_code_multi() {
   "$SCRIPT_DIR"/fabric/data_generators.sh generate_from_filelist true < <(ai -p "devops_code" "$@")
 }
 
+ai_code_multi_chat() {
+  "$SCRIPT_DIR"/fabric/data_generators.sh generate_from_filelist true < <(ai -c "$@")
+}
+
 # git
 ai_git() {
   "$SCRIPT_DIR"/fabric/fabric.sh -p devops_gitcommit "$@"
+}
+
+ai_git_check() {
+  gd origin/master | ai -p devops_git_check
 }
 
 # data collectors
@@ -140,4 +148,4 @@ model() {
 }
 
 # load current favorite model
-model_claude
+model_chatgpt

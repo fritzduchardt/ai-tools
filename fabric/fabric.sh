@@ -108,7 +108,7 @@ fbrc() {
   if [[ -n "$inputfile" ]]; then
     cmd_prefix=(sed "1i $prompt:" $inputfile)
   elif read -r -t0 -n0; then
-    cmd_prefix=(sed "1s/^/$prompt: /")
+    cmd_prefix=(sed "1s#^#$prompt: #")
   else
     cmd_prefix=(echo "$prompt")
   fi
