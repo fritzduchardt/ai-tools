@@ -19,11 +19,8 @@ alias aigit=ai_git
 alias aigitcheck=ai_git_check
 
 # Model aliases
-alias moq=model_ollama_qwem
-alias moc=model_ollama_codestral
-alias mod=model_ollama_deepseek
-alias mog=model_ollama_gemma
-alias mom=model_ollama_mistral
 alias mc=model_claude
 alias mg=model_chatgpt
 alias md=model_deepseek
+alias mk=model_grok
+alias mm=model_mistral

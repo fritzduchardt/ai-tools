@@ -140,7 +140,15 @@ model_chatgpt() {
 }
 
 model_deepseek() {
-  export DEFAULT_MODEL=deepseek-reasoner DEFAULT_VENDOR=DeepSeek EXTRA_AI_OPTS=
+  export DEFAULT_MODEL=deepseek-reasoner DEFAULT_VENDOR=DeepSeek DEFAULT_MODEL_CONTEXT_LENGTH=100000 EXTRA_AI_OPTS=
+}
+
+model_grok() {
+  export DEFAULT_MODEL=grok-3-mini DEFAULT_VENDOR=GrokAI EXTRA_AI_OPTS=
+}
+
+model_mistral() {
+  export DEFAULT_MODEL=mistral-large-latest DEFAULT_VENDOR=Mistral DEFAULT_MODEL_CONTEXT_LENGTH=100000 EXTRA_AI_OPTS=
 }
 
 model() {
