@@ -1,10 +1,10 @@
 {{- define "bash" -}}
 - If it is bash:
   - Use $variable instead of ${variable} where possible.
-  - Always quote variables including parameters, e.g. $1, as well as inline commands, e.g. $(echo hi)
+  - Quote all variables, parameters and command substitutions
   - Ensure variables within functions are local
   - Ensure shebang is first line in script
-  - Use parameter substitution to set variable default values
+  - Use parameter expansion to set variable default values
   - Use if [[]]; then rather than [[]] &&
   - Use while; do rather than while; then
   - Don't add dry run options
