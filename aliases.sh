@@ -24,3 +24,4 @@ alias mg=model_chatgpt
 alias md=model_deepseek
 alias mk=model_grok
 alias mm=model_mistral
+alias mi=model_gemini

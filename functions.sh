@@ -151,6 +151,10 @@ model_mistral() {
   export DEFAULT_MODEL=mistral-large-latest DEFAULT_VENDOR=Mistral DEFAULT_MODEL_CONTEXT_LENGTH=100000 EXTRA_AI_OPTS=
 }
 
+model_gemini() {
+  export DEFAULT_VENDOR=Gemini DEFAULT_MODEL=gemini-2.5-pro-preview-06-05 DEFAULT_MODEL_CONTEXT_LENGTH=100000 EXTRA_AI_OPTS=
+}
+
 model() {
   env | grep DEFAULT_MODEL
 }

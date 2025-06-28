@@ -9,7 +9,7 @@ source "$SCRIPT_DIR/../functions.sh"
 # All subsequent lines are written to that file until next FILENAME: marker
 generate_from_filelist() {
   local no_backup="$1"
-  local line file_name
+  local line file_name first_line_written
   while IFS= read -r line; do
     if [[ $line == FILENAME:* ]]; then
       file_name="${line#*FILENAME: }"
@@ -25,8 +25,16 @@ generate_from_filelist() {
         lib::exec mkdir -p "$(dirname "$file_name")"
         lib::exec touch "$file_name"
       fi
+      first_line_written=0
     else
       if [[ -n $file_name ]]; then
+        # skip empty first line
+        if [[ $first_line_written -eq 0 ]]; then
+          if [[ -z $line ]]; then
+            continue
+          fi
+          first_line_written=1
+        fi
         echo "$line" >> "$file_name"
       else
         log::info "$line"
