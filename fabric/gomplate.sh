@@ -3,7 +3,7 @@
 SCRIPT_DIR="$(dirname -- "$0")"
 source "$SCRIPT_DIR/../lib/log.sh"
 source "$SCRIPT_DIR/../lib/utils.sh"
-PRIVATE_PATTERN_DIR="${PRIVATE_PATTERN_DIR:-$HOME/Sync/patterns}"
+PRIVATE_PATTERN_DIR="${PRIVATE_PATTERN_DIR:-$HOME/Sync/FritzSync/patterns}"
 
 OUTPUT_DIR="$HOME/.config/fabric"
 rm -rf "$OUTPUT_DIR/patterns"

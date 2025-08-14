@@ -135,6 +135,10 @@ model_claude() {
   export DEFAULT_MODEL=claude-3-7-sonnet-latest DEFAULT_MODEL_CONTEXT_LENGTH=100000 DEFAULT_VENDOR=Anthropic EXTRA_AI_OPTS=
 }
 
+model_claude_opus() {
+  export DEFAULT_MODEL=claude-3-opus-latest DEFAULT_MODEL_CONTEXT_LENGTH=100000 DEFAULT_VENDOR=Anthropic EXTRA_AI_OPTS=
+}
+
 model_chatgpt() {
   export DEFAULT_MODEL=o4-mini DEFAULT_MODEL_CONTEXT_LENGTH=100000 DEFAULT_VENDOR=OpenAI EXTRA_AI_OPTS=-r
 }
