@@ -102,7 +102,7 @@ cffr path/to/script | aicm improve everything
 
 ### Write documentation for directory
 ``` bash
-cffr path/to/dir | ai-doc > README.md
+cffr path/to/dir | aid > README.md
 ```
 
 ### Create a commit message
