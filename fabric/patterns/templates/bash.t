@@ -14,6 +14,7 @@
   - Use functions where possible including "main" function to bootstrap script.
   - Dont check for presence of binaries. Assume they are installed.
   - For logging use log::info, log::debug, log::error and log::warning functions
+  - Use comments in the spirit of Clean Code: only comment if not already obvious due to method or variable names.
   - Start all scripts with:
   #!/usr/bin/env bash
 

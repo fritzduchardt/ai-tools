@@ -106,7 +106,7 @@ fbrc() {
   local -a cmd_prefix
   # if the input file was provided, add it to prompt
   if [[ -n "$inputfile" ]]; then
-    cmd_prefix=(sed "1i $prompt:" $inputfile)
+    cmd_prefix=(sed "1i $prompt:" "$inputfile")
   elif read -r -t0 -n0; then
     cmd_prefix=(sed "1s#^#$prompt: #")
   else
