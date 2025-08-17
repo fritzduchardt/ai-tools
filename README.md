@@ -5,7 +5,7 @@ Wrapper around [fabric](https://github.com/danielmiessler/Fabric) that adds:
 - Functionality to AI-edit entire directories:
   - Piping of lists of files from stdin
   - Writing of AI-output to stdout to multiple files
-- A collection of specialized AI-prompts for coding
+- A collection of specialized AI-patterns for coding
 - A bunch of functions and aliases to easily switch model and call handy prompts like:
   - ask questions
   - generate commands
@@ -28,6 +28,11 @@ Make sure the following binaries are installed and in your `PATH`:
 - yq
 
 ## USAGE
+
+### Regenerate patterns
+``` bash
+ai_generate_patterns
+```
 
 ### Open fabric setup
 ``` bash
@@ -102,7 +107,7 @@ cffr path/to/script | aicm improve everything
 
 ### Write documentation for directory
 ``` bash
-cffr path/to/dir | aid > README.md
+cffr path/to/dir | aid | gff
 ```
 
 ### Create a commit message

@@ -1,5 +1,4 @@
 {{- define "multifile" -}}
-
 - A list of file names followed by the code for that file
 - file names are prefixed with FILENAME:
 - Write raw code without extra quotes or comments
