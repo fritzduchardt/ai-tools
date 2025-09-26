@@ -143,6 +143,10 @@ model_chatgpt() {
   export DEFAULT_MODEL=o4-mini DEFAULT_MODEL_CONTEXT_LENGTH=100000 DEFAULT_VENDOR=OpenAI EXTRA_AI_OPTS=-r
 }
 
+model_chatgpt5() {
+  export DEFAULT_MODEL=gpt-5-mini DEFAULT_MODEL_CONTEXT_LENGTH=100000 DEFAULT_VENDOR=OpenAI EXTRA_AI_OPTS=-r
+}
+
 model_deepseek() {
   export DEFAULT_MODEL=deepseek-reasoner DEFAULT_VENDOR=DeepSeek DEFAULT_MODEL_CONTEXT_LENGTH=100000 EXTRA_AI_OPTS=
 }
@@ -164,4 +168,4 @@ model() {
 }
 
 # load current favorite model
-model_chatgpt
+model_chatgpt5
