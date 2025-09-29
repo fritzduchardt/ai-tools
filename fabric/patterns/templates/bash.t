@@ -1,8 +1,9 @@
 {{- define "bash" -}}
 - If it is bash:
+  _ Always add usage function with a couple of run examples which can be called with -h
   - Use $variable instead of ${variable} where possible.
   - Quote all variables, parameters and command substitutions
-  - Ensure variables within functions are local
+  - Ensure variables within functions are local. Write local variables in lowercase. Declare and assign variables in one line.
   - Ensure shebang is first line in script
   - Use parameter expansion to set variable default values
   - Use if [[]]; then rather than [[]] &&
@@ -14,7 +15,11 @@
   - Use functions where possible including "main" function to bootstrap script.
   - Dont check for presence of binaries. Assume they are installed.
   - For logging use log::info, log::debug, log::error and log::warning functions
-  - Use comments in the spirit of Clean Code: only comment if not already obvious due to method or variable names.
+  - Prefix all linux commands executed by the script with lib::exec. No need to use bash -c in that case.
+  - On complicated functions add a general comment, explaining what they do.
+  - On code doing networking, add comments explaining in detail what it does.
+  - when writing negative iptables rules, use the notation: "!" -i/-o "name-of-interface"
+  - when added iptables rules, always just add them and disregard the return code.
   - Start all scripts with:
   #!/usr/bin/env bash
 

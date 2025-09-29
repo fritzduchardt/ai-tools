@@ -9,6 +9,7 @@ alias aicc=ai_chat_command
 alias aicmd=ai_cmd
 alias aico=ai_code
 alias aicoc=ai_code_continue
+alias aicob=ai_code_bash
 alias aid=ai_doc
 alias aim=ai_multi
 alias aicm=ai_code_multi

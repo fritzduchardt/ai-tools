@@ -39,6 +39,10 @@ ai_cmd() {
 }
 
 # generate code single file
+ai_code_bash() {
+  "$SCRIPT_DIR"/fabric/fabric.sh -p devops_code_bash "$@"
+}
+
 ai_code() {
   "$SCRIPT_DIR"/fabric/fabric.sh -p devops_code "$@"
 }
