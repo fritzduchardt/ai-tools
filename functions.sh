@@ -66,6 +66,10 @@ ai_code_multi() {
   "$SCRIPT_DIR"/fabric/data_generators.sh generate_from_filelist true < <(ai -p "devops_code" "$@")
 }
 
+ai_code_multi_bash() {
+  "$SCRIPT_DIR"/fabric/data_generators.sh generate_from_filelist true < <(ai -p "devops_code_bash" "$@")
+}
+
 ai_code_multi_chat() {
   "$SCRIPT_DIR"/fabric/data_generators.sh generate_from_filelist true < <(ai -c "$@")
 }

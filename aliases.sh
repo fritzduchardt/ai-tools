@@ -13,6 +13,7 @@ alias aicob=ai_code_bash
 alias aid=ai_doc
 alias aim=ai_multi
 alias aicm=ai_code_multi
+alias aicmb=ai_code_multi_bash
 alias aicmc=ai_code_multi_chat
 
 # AI directory and git commands

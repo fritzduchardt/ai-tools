@@ -8,6 +8,7 @@
   - Use parameter expansion to set variable default values
   - Use if [[]]; then rather than [[]] &&
   - Use while; do rather than while; then
+  - For parsing of input parameters, use while [[ $# -gt 0 ]] notation in combination with shift and a case statement.
   - Check exit codes directly where possible
   - Dont add dry run options
   - Leave multi line strings in place
@@ -16,10 +17,11 @@
   - Dont check for presence of binaries. Assume they are installed.
   - For logging use log::info, log::debug, log::error and log::warning functions
   - Prefix all linux commands executed by the script with lib::exec. No need to use bash -c in that case.
-  - On complicated functions add a general comment, explaining what they do.
+  - In the spirit of Clean Code, try to show function purpose in naming, dont add comments at function level.
   - On code doing networking, add comments explaining in detail what it does.
   - when writing negative iptables rules, use the notation: "!" -i/-o "name-of-interface"
   - when added iptables rules, always just add them and disregard the return code.
+  - Dont add prerequisites function
   - Start all scripts with:
   #!/usr/bin/env bash
 
