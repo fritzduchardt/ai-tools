@@ -1,6 +1,6 @@
 {{- define "bash" -}}
 - If it is bash:
-  _ Always add usage function with a couple of run examples which can be called with -h
+  _ Always add usage function with a couple of run examples which can be called with -h. Reference function name within usage function with $0.
   - Use $variable instead of ${variable} where possible.
   - Quote all variables, parameters and command substitutions
   - Ensure variables within functions are local. Write local variables in lowercase. Declare and assign variables in one line.
@@ -15,7 +15,7 @@
   - Leave if statements in place. Make the shorter if needed but never replace them with direct output.
   - Use functions where possible including "main" function to bootstrap script.
   - Dont check for presence of binaries. Assume they are installed.
-  - For logging use log::info, log::debug, log::error and log::warning functions
+  - For logging use log::info, log::debug, log::error and log::warn functions
   - Prefix all linux commands executed by the script with lib::exec. No need to use bash -c in that case.
   - In the spirit of Clean Code, try to show function purpose in naming, dont add comments at function level.
   - On code doing networking, add comments explaining in detail what it does.
