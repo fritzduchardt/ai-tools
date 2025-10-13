@@ -10,11 +10,14 @@ alias aicmd=ai_cmd
 alias aico=ai_code
 alias aicoc=ai_code_continue
 alias aicob=ai_code_bash
+alias aicog=ai_code_go
 alias aid=ai_doc
 alias aim=ai_multi
 alias aicm=ai_code_multi
-alias aicmb=ai_code_multi_bash
 alias aicmc=ai_code_multi_chat
+alias aicmb=ai_code_multi_bash
+alias aicmg=ai_code_multi_go
+alias aicms=ai_code_multi_scaffold
 
 # AI directory and git commands
 alias aigit=ai_git

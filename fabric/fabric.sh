@@ -12,6 +12,12 @@ FBRC_CONTEXT_FILE="$FBRC_CONFIG/contexts/general_context.md"
 OUTPUT_FILTER=(grep -v "Creating new session:")
 XCLIP_COPY=(xclip -r -sel clip)
 
+check_pipe_input() {
+  if [[ ! -t 0 ]]; then
+    return 0
+  fi
+  return 1
+}
 
 function show_help() {
   echo "Usage: fbrc [OPTIONS]"
@@ -94,7 +100,6 @@ fbrc() {
   if [[ $# -gt 0 ]]; then
     prompt="$*\n"
   fi
-
   # shellcheck disable=SC2206
   if [[ -z "$fabric_cmd" ]]; then
     local -a fabric_cmd=(fabric --context "$(basename "$FBRC_CONTEXT_FILE")" --stream --session "$session" --pattern "$pattern" $EXTRA_AI_OPTS)
@@ -107,9 +112,11 @@ fbrc() {
   # if the input file was provided, add it to prompt
   if [[ -n "$inputfile" ]]; then
     cmd_prefix=(sed "1i $prompt:" "$inputfile")
-  elif read -r -t0 -n0; then
+  elif check_pipe_input; then
+    log::debug "Data was piped into script"
     cmd_prefix=(sed "1s#^#$prompt: #")
   else
+    log::debug "No data was piped into script"
     cmd_prefix=(echo "$prompt")
   fi
 
