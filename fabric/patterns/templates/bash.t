@@ -1,9 +1,14 @@
 {{- define "bash" -}}
 - If it is bash:
-  _ Always add usage function with a couple of run examples which can be called with -h. Reference function name within usage function with $0.
+  _ Always add usage function with a couple of run examples which can be called with -h.
+    - Reference function name within usage function with $0.
+    - Use echo triple-quote notation to write the usage instructions.
   - Use $variable instead of ${variable} where possible.
   - Quote all variables, parameters and command substitutions
-  - Ensure variables within functions are local. Write local variables in lowercase. Declare and assign variables in one line.
+  - Local variables:
+    - Ensure variables within functions are local.
+    - Write local variables in lowercase.
+    - Declare and assign variable in one line, but each variable on a separate line, unless variables not require initialization, in which case they can be declared on the same line.
   - Ensure shebang is first line in script
   - Use parameter expansion to set variable default values
   - Use if [[]]; then rather than [[]] &&

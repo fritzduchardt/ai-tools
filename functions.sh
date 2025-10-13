@@ -140,11 +140,11 @@ model_ollama_mistral() {
 }
 
 model_claude() {
-  export DEFAULT_MODEL=claude-3-7-sonnet-latest DEFAULT_MODEL_CONTEXT_LENGTH=100000 DEFAULT_VENDOR=Anthropic EXTRA_AI_OPTS=
+  export DEFAULT_MODEL=claude-sonnet-4-20250514 DEFAULT_MODEL_CONTEXT_LENGTH=100000 DEFAULT_VENDOR=Anthropic EXTRA_AI_OPTS=
 }
 
 model_claude_opus() {
-  export DEFAULT_MODEL=claude-3-opus-latest DEFAULT_MODEL_CONTEXT_LENGTH=100000 DEFAULT_VENDOR=Anthropic EXTRA_AI_OPTS=
+  export DEFAULT_MODEL=claude-opus-4-1-20250805 DEFAULT_MODEL_CONTEXT_LENGTH=100000 DEFAULT_VENDOR=Anthropic EXTRA_AI_OPTS=
 }
 
 model_chatgpt() {
@@ -152,7 +152,7 @@ model_chatgpt() {
 }
 
 model_chatgpt5() {
-  export DEFAULT_MODEL=gpt-5-mini DEFAULT_MODEL_CONTEXT_LENGTH=100000 DEFAULT_VENDOR=OpenAI EXTRA_AI_OPTS=-r
+  export DEFAULT_MODEL=gpt-5-mini-2025-08-07 DEFAULT_MODEL_CONTEXT_LENGTH=100000 DEFAULT_VENDOR=OpenAI EXTRA_AI_OPTS=-r
 }
 
 model_deepseek() {
@@ -160,7 +160,7 @@ model_deepseek() {
 }
 
 model_grok() {
-  export DEFAULT_MODEL=grok-3-mini DEFAULT_VENDOR=GrokAI EXTRA_AI_OPTS=
+  export DEFAULT_MODEL=grok-4-fast-reasoning DEFAULT_VENDOR=GrokAI EXTRA_AI_OPTS=
 }
 
 model_mistral() {
@@ -168,7 +168,7 @@ model_mistral() {
 }
 
 model_gemini() {
-  export DEFAULT_VENDOR=Gemini DEFAULT_MODEL=gemini-2.5-pro-preview-06-05 DEFAULT_MODEL_CONTEXT_LENGTH=100000 EXTRA_AI_OPTS=
+  export DEFAULT_VENDOR=Gemini DEFAULT_MODEL=gemini-pro-latest DEFAULT_MODEL_CONTEXT_LENGTH=100000 EXTRA_AI_OPTS=
 }
 
 model() {

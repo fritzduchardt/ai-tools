@@ -77,7 +77,7 @@ fbrc() {
   session="$(create_session)"
   prepare_context "$FBRC_CONTEXT_FILE"
   if [[ -n "$chat" ]]; then
-    log::info "Starting a chat.."
+    log::info "Starting a chat with $MODEL.."
     last_fabric fabric_cmd
     # overwrite pattern if it was provided explicitly
     if [[ -n "$pattern" ]]; then
@@ -113,7 +113,7 @@ fbrc() {
     cmd_prefix=(echo "$prompt")
   fi
 
-  log::info "Calling the AI.. (${fabric_cmd[*]})"
+  log::info "Calling the AI ($MODEL).. (${fabric_cmd[*]})"
   if ! output="$(lib::exec "${cmd_prefix[@]}" | lib::exec "${fabric_cmd[@]}" | "${OUTPUT_FILTER[@]}")"; then
     log::error "Failed to call fabric"
     log::error "$output"
