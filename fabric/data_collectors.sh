@@ -12,7 +12,9 @@ FILENAME: $file
 "
       cat "$file"
       echo
-  done < <(lib::exec fd -E '*.pdf' -E '*.md.edtz'  -E '*.png' -E '*.jpg' -E \
+  done < <(lib::exec fd -E '.*/bin/.*' -E '*.pdf' -E '*.md.edtz'  -E '*.png' \
+    -E '*.jpg'
+  -E \
     '*.jpeg' -E \
     '*.gif' -E '*.backup' -E '*.archive'  -d 1 -t file "$pattern")
 }
@@ -26,7 +28,8 @@ FILENAME: $file
 "
       cat "$file"
       echo
-  done < <(lib::exec fd -E '*.pdf' -E '*.edtz' -E '*.png' -E '*.jpg' -E \
+  done < <(lib::exec fd -E 'bin/' -E '*.pdf' -E '*.edtz' -E '*.png' -E \
+    '*.jpg' -E \
     '*.jpeg' \
     -E \
     '*.gif' -E '*.backup' -E '*.archive' --full-path -t file "$pattern")
