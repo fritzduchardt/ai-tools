@@ -28,6 +28,7 @@ alias mc=model_claude
 alias mco=model_claude_opus
 alias mg=model_chatgpt
 alias mg5=model_chatgpt5
+alias mg5c=model_chatgpt5_codex
 alias md=model_deepseek
 alias mk=model_grok
 alias mm=model_mistral

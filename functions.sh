@@ -23,7 +23,7 @@ ai_general_prompt() {
 }
 
 ai_devops_question() {
-  "$SCRIPT_DIR"/fabric/fabric.sh -p devops_question "$@"
+  "$SCRIPT_DIR"/fabric/fabric.sh -p devops_general "$@"
 }
 
 ai_chat() {
@@ -162,11 +162,15 @@ model_claude_opus() {
 }
 
 model_chatgpt() {
-  export DEFAULT_MODEL=o4-mini DEFAULT_MODEL_CONTEXT_LENGTH=100000 DEFAULT_VENDOR=OpenAI EXTRA_AI_OPTS=-r
+  export DEFAULT_MODEL=o4-mini DEFAULT_MODEL_CONTEXT_LENGTH=100000 DEFAULT_VENDOR=OpenAI EXTRA_AI_OPTS=
 }
 
 model_chatgpt5() {
-  export DEFAULT_MODEL=gpt-5-mini-2025-08-07 DEFAULT_MODEL_CONTEXT_LENGTH=100000 DEFAULT_VENDOR=OpenAI EXTRA_AI_OPTS=-r
+  export DEFAULT_MODEL=gpt-5-mini-2025-08-07 DEFAULT_MODEL_CONTEXT_LENGTH=100000 DEFAULT_VENDOR=OpenAI EXTRA_AI_OPTS=
+}
+
+model_chatgpt5_codex() {
+  export DEFAULT_MODEL=gpt-5-codex DEFAULT_MODEL_CONTEXT_LENGTH=100000 DEFAULT_VENDOR=OpenAI EXTRA_AI_OPTS=
 }
 
 model_deepseek() {
@@ -174,11 +178,11 @@ model_deepseek() {
 }
 
 model_grok() {
-  export DEFAULT_MODEL=grok-4-fast-reasoning DEFAULT_VENDOR=GrokAI EXTRA_AI_OPTS=
+  export DEFAULT_MODEL=grok-code-fast-1 DEFAULT_VENDOR=GrokAI EXTRA_AI_OPTS=
 }
 
 model_mistral() {
-  export DEFAULT_MODEL=mistral-large-latest DEFAULT_VENDOR=Mistral DEFAULT_MODEL_CONTEXT_LENGTH=100000 EXTRA_AI_OPTS=
+  export DEFAULT_MODEL=codestral-latest DEFAULT_VENDOR=Mistral DEFAULT_MODEL_CONTEXT_LENGTH=100000 EXTRA_AI_OPTS=
 }
 
 model_gemini() {
