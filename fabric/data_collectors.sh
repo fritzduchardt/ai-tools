@@ -13,10 +13,8 @@ FILENAME: $file
       cat "$file"
       echo
   done < <(lib::exec fd -E '.*/bin/.*' -E '*.pdf' -E '*.md.edtz'  -E '*.png' \
-    -E '*.jpg'
-  -E \
-    '*.jpeg' -E \
-    '*.gif' -E '*.backup' -E '*.archive'  -d 1 -t file "$pattern")
+    -E '*.jpg' -E '*.jpeg' -E '*.gif' -E '*.backup' -E '*.archive'  -d 1 -t \
+    file "$pattern")
 }
 
 concat_for_fabric_recursive() {
@@ -36,11 +34,11 @@ FILENAME: $file
 }
 
 find_for_fabric() {
-  fd . "$@" --max-depth 1 --type f
+  fd "$@" --max-depth 1 --type f
 }
 
 find_for_fabric_recursive() {
-  fd . "$@" --type f
+  fd "$@" --type f
 }
 
 internet_for_fabric() {

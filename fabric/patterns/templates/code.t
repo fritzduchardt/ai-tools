@@ -1,5 +1,6 @@
 {{- define "code" -}}
 - Write straight code without explanations or snippets
+- Write expressive method names, dont write comments
 - Always return entire changed file, including the parts that have not changed.
 - Write code of the program straight without adding quotes or further comments.
 - Never start output with ``` name of programming language
