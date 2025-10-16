@@ -26,10 +26,12 @@ function show_help() {
   echo "  -s SESSION       Specify a session."
   echo "  -h               Show this help message."
   echo "  -c               Don't reset session."
+  echo "  -q               Stream response, good for ai questions from the
+  terminal."
 }
 
 fbrc() {
-  local pattern prompt output copy_to_clipboard chat fabric_cmd session
+  local pattern prompt output stream chat fabric_cmd session
 
   while [[ "$#" -gt 0 ]]; do
     case "$1" in
@@ -43,6 +45,10 @@ fbrc() {
         ;;
       -c)
         chat="true"
+        shift 1
+        ;;
+      -q)
+        stream="--stream"
         shift 1
         ;;
       *)
@@ -77,7 +83,7 @@ fbrc() {
   fi
   # shellcheck disable=SC2206
   if [[ -z "$fabric_cmd" ]]; then
-    fabric_cmd="fabric --context "$(basename "$FBRC_CONTEXT_FILE")" --stream
+    fabric_cmd="fabric --context "$(basename "$FBRC_CONTEXT_FILE")" $stream
      --session "$session" --pattern "$pattern" $EXTRA_AI_OPTS"
     # store for posterity
     echo "$fabric_cmd" >> ~/.bash_history

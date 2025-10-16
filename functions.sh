@@ -15,7 +15,7 @@ ai() {
 }
 
 ai_general_question() {
-  "$SCRIPT_DIR"/fabric/fabric.sh -p general "$@"
+  "$SCRIPT_DIR"/fabric/fabric.sh -p general -q "$@"
 }
 
 ai_general_prompt() {
@@ -23,7 +23,7 @@ ai_general_prompt() {
 }
 
 ai_devops_question() {
-  "$SCRIPT_DIR"/fabric/fabric.sh -p devops_general "$@"
+  "$SCRIPT_DIR"/fabric/fabric.sh -p devops_general -q "$@"
 }
 
 ai_chat() {
