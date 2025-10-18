@@ -195,3 +195,8 @@ model() {
 
 # load current favorite model
 model_chatgpt5
+
+# Debug utiltiies
+debug_last_session() {
+  ./fabric/debug.sh
+}
