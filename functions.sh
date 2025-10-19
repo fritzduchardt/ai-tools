@@ -198,5 +198,5 @@ model_chatgpt5
 
 # Debug utiltiies
 debug_last_session() {
-  ./fabric/debug.sh
+  "$SCRIPT_DIR"/fabric/debug.sh
 }
