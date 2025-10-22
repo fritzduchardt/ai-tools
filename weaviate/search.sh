@@ -39,7 +39,7 @@ weaviate::search() {
   local limit="$4"
   local certainty="$5"
 
-  local payload='{"query":"{ Get { '$class'(nearText: { concepts: [\"'$term'\"], certainty: '$certainty'}, limit: '$limit' ) { name content _additional { distance } } } }"}'
+  local payload='{"query":"{ Get { '$class'(hybrid: { query: \"'$term'\", alpha: '$certainty'}, limit: '$limit' )  { path content } } }"}'
 
   # Perform HTTP POST to Weaviate GraphQL endpoint.
   # This sends the GraphQL query in the request body to endpoint/v1/graphql and captures the response.
@@ -49,14 +49,20 @@ weaviate::search() {
     log::error "Failed to query Weaviate at $endpoint"
     return 1
   fi
+  log::debug "Response: $response"
   # Empty result
   if [[ "$response" == '{"data":{"Get":{"ObsidianFile":[]}}}' ]]; then
     log::info "Found nothing"
     return 0
   fi
   # Parse the response with jq and print relevant fields.
-  # We access data.Get[class] and print id, title (or name) and a snippet of content when available.
-  if ! lib::exec jq -r --arg class "$class" '.data.Get[$class][] as $item | "\($item._additional.id)\t\($item.title // $item.name // "")\t\($item.content // "" )"' <<<"$response"; then
+  if ! lib::exec jq -r ".data.Get.$class[].path" \
+    <<<"$response"; then
+    log::warn "No results or unexpected response structure from Weaviate"
+    return 0
+  fi
+  if ! lib::exec jq -r ".data.Get.$class[].content" \
+    <<<"$response"; then
     log::warn "No results or unexpected response structure from Weaviate"
     return 0
   fi
@@ -69,10 +75,10 @@ main() {
   local limit=""
   local certainty=""
 
-  endpoint="${endpoint:-http://localhost:8080}"
+  endpoint="${endpoint:-http://localhost:8082}"
   class="${class:-ObsidianFile}"
   limit="${limit:-1}"
-  certainty="${certainty:-0.7}"
+  certainty="${certainty:-0.5}"
 
   while [[ $# -gt 0 ]]; do
     case "$1" in

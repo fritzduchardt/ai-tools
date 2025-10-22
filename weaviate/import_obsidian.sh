@@ -28,11 +28,6 @@ weaviate::import_file() {
   log::info "Preparing import for file: $file"
   payload="$(lib::exec jq -Rs --arg class "$class" --arg path "$file" '{class: $class, properties: {path: $path, content: .}}' <"$file")"
   log::debug "Payload for $file: $payload"
-  # This performs an HTTP POST to the Weaviate REST API to create a single object.
-  # It sends a JSON payload with the class name and properties containing the
-  # file path and raw file content. The network call is executed via curl and
-  # will return the API response; failures will cause the script to exit due to
-  # set -eo pipefail so callers should ensure correct endpoint and network.
   lib::exec curl -sS -X POST -H "Content-Type: application/json" -d "$payload" "$endpoint/v1/objects"
 }
 
@@ -44,12 +39,8 @@ weaviate::import_dir() {
     log::error "Directory not found: $dir"
     return 1
   fi
-  # Recursively find files and import each into Weaviate.
-  # We use find -print0 and read -d '' to safely handle filenames with spaces and newlines.
-  # For each file we build a JSON payload with jq (reading file content safely) and
-  # POST it to the Weaviate /v1/objects endpoint using curl.
-  lib::exec find "$dir" -name "*.md" -type f -print0 \
-    | while IFS= read -r -d '' file; do
+  lib::exec find "$dir" -name "*.md" -type f | grep -v ".trash" \
+    | while IFS= read -r file; do
     weaviate::import_file "$endpoint" "$class" "$file"
   done
 }
@@ -59,7 +50,7 @@ main() {
   local endpoint
   local class
   dir="${DIR:-.}"
-  endpoint="${ENDPOINT:-http://localhost:8080}"
+  endpoint="${ENDPOINT:-http://localhost:8082}"
   class="${CLASS:-ObsidianFile}"
   while [[ $# -gt 0 ]]; do
     case "$1" in
