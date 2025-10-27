@@ -177,8 +177,13 @@ model_deepseek() {
   export DEFAULT_MODEL=deepseek-reasoner DEFAULT_VENDOR=DeepSeek DEFAULT_MODEL_CONTEXT_LENGTH=100000 EXTRA_AI_OPTS=
 }
 
-model_grok() {
+model_grok_code() {
   export DEFAULT_MODEL=grok-code-fast-1 DEFAULT_VENDOR=GrokAI EXTRA_AI_OPTS=
+}
+
+model_grok() {
+  export DEFAULT_MODEL=grok-4-fast-non-reasoning DEFAULT_VENDOR=GrokAI \
+    EXTRA_AI_OPTS=
 }
 
 model_mistral() {

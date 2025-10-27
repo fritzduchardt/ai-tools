@@ -31,5 +31,6 @@ alias mg5=model_chatgpt5
 alias mg5c=model_chatgpt5_codex
 alias md=model_deepseek
 alias mk=model_grok
+alias mkc=model_grok_code
 alias mm=model_mistral
 alias mi=model_gemini
