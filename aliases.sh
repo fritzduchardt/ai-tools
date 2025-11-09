@@ -26,7 +26,7 @@ alias aigitcheck=ai_git_check
 # Model aliases
 alias mc=model_claude
 alias mco=model_claude_opus
-alias mg=model_chatgpt
+alias mg=model_chatgpt_turbo
 alias mg5=model_chatgpt5
 alias mg5c=model_chatgpt5_codex
 alias md=model_deepseek

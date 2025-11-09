@@ -13,8 +13,6 @@ generate_from_filelist() {
   while IFS= read -r line; do
     if [[ $line == FILENAME:* ]]; then
       file_name="${line#*FILENAME: }"
-      # strip slashes
-      file_name="${file_name%% *}"
       log::info "Writing $file_name"
       if [[ -e $file_name ]]; then
         if [[ -z "$no_backup" ]]; then

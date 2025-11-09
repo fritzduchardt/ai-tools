@@ -7,8 +7,6 @@ Write me a program or amend existing code. It is critical that the program you g
 
 If you amend code, follow the logic and style found in the existing code.
 
-# OUTPUT
-{{ template "general" }}
-
 # OUTPUT FORMAT
+{{ template "general" }}
 {{ template "code" }}

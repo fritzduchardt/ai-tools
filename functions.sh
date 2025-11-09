@@ -23,7 +23,7 @@ ai_general_prompt() {
 }
 
 ai_devops_question() {
-  "$SCRIPT_DIR"/fabric/fabric.sh -p devops_general -q "$@"
+  "$SCRIPT_DIR"/fabric/fabric.sh -p devops_quick_question -q "$@"
 }
 
 ai_chat() {
@@ -161,8 +161,8 @@ model_claude_opus() {
   export DEFAULT_MODEL=claude-opus-4-1-20250805 DEFAULT_MODEL_CONTEXT_LENGTH=100000 DEFAULT_VENDOR=Anthropic EXTRA_AI_OPTS=
 }
 
-model_chatgpt() {
-  export DEFAULT_MODEL=o4-mini DEFAULT_MODEL_CONTEXT_LENGTH=100000 DEFAULT_VENDOR=OpenAI EXTRA_AI_OPTS=
+model_chatgpt_turbo() {
+  export DEFAULT_MODEL=gpt-4-turbo DEFAULT_MODEL_CONTEXT_LENGTH=100000 DEFAULT_VENDOR=OpenAI EXTRA_AI_OPTS=
 }
 
 model_chatgpt5() {
