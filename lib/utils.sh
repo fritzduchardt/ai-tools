@@ -15,6 +15,20 @@ lib::exec() {
   fi
 }
 
+file::strip_trailing_empty_lines() {
+  local file
+  file="$1"
+  lib::exec awk '{
+    lines[NR]=$0
+  }
+  END {
+    n=NR
+    while(n>0 && lines[n] ~ "^[[:space:]]*$") n--
+    for(i=1;i<=n;i++) print lines[i]
+  }' "$file" > "$file".tmp
+  lib::exec mv "$file".tmp "$file"
+}
+
 fzf::select_from_config() {
   local config_file="$1"
   local header="$2"

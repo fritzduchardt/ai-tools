@@ -12,6 +12,10 @@ generate_from_filelist() {
   local line file_name first_line_written
   while IFS= read -r line; do
     if [[ $line == FILENAME:* ]]; then
+      if [[ $first_line_written -eq 1 ]]; then
+        # stip empty line from last file written
+        file::strip_trailing_empty_lines "$file_name"
+      fi
       file_name="${line#*FILENAME: }"
       log::info "Writing $file_name"
       if [[ -e $file_name ]]; then
