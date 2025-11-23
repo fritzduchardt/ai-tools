@@ -8,7 +8,6 @@ source "$SCRIPT_DIR/../functions.sh"
 # Input format: Lines starting with "FILENAME:" indicate new output file
 # All subsequent lines are written to that file until next FILENAME: marker
 generate_from_filelist() {
-  local no_backup="$1"
   local line file_name first_line_written
   while IFS= read -r line; do
     if [[ $line == FILENAME:* ]]; then
@@ -19,9 +18,6 @@ generate_from_filelist() {
       file_name="${line#*FILENAME: }"
       log::info "Writing $file_name"
       if [[ -e $file_name ]]; then
-        if [[ -z "$no_backup" ]]; then
-          lib::exec cp "$file_name" "$file_name".backup
-        fi
         lib::exec truncate -s 0 "$file_name"
       else
         lib::exec mkdir -p "$(dirname "$file_name")"

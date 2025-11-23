@@ -64,27 +64,27 @@ ai_multi() {
 }
 
 ai_code_multi() {
-  "$SCRIPT_DIR"/fabric/data_generators.sh generate_from_filelist true <<<"$(ai \
+  "$SCRIPT_DIR"/fabric/data_generators.sh generate_from_filelist <<<"$(ai \
     -p "devops_code" "$@")"
 }
 
 ai_code_multi_bash() {
-  "$SCRIPT_DIR"/fabric/data_generators.sh generate_from_filelist true \
+  "$SCRIPT_DIR"/fabric/data_generators.sh generate_from_filelist \
     <<<"$(ai  -p "devops_code_bash" "$@")"
 }
 
 ai_code_multi_go() {
-  "$SCRIPT_DIR"/fabric/data_generators.sh generate_from_filelist true <<<"$(ai \
+  "$SCRIPT_DIR"/fabric/data_generators.sh generate_from_filelist <<<"$(ai \
     -p "devops_code_go" "$@")"
 }
 
 ai_code_multi_scaffold() {
-  "$SCRIPT_DIR"/fabric/data_generators.sh generate_from_filelist true <<<"$(ai \
+  "$SCRIPT_DIR"/fabric/data_generators.sh generate_from_filelist <<<"$(ai \
     -p "devops_code_scaffold" "$@")"
 }
 
 ai_code_multi_chat() {
-  "$SCRIPT_DIR"/fabric/data_generators.sh generate_from_filelist true <<<"$(ai
+  "$SCRIPT_DIR"/fabric/data_generators.sh generate_from_filelist <<<"$(ai
   -c "$@")"
 }
 
