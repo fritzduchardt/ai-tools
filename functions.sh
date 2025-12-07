@@ -166,7 +166,7 @@ model_chatgpt_turbo() {
 }
 
 model_chatgpt5() {
-  export DEFAULT_MODEL=gpt-5-mini-2025-08-07 DEFAULT_MODEL_CONTEXT_LENGTH=100000 DEFAULT_VENDOR=OpenAI EXTRA_AI_OPTS=
+  export DEFAULT_MODEL=gpt-5.1 DEFAULT_MODEL_CONTEXT_LENGTH=100000 DEFAULT_VENDOR=OpenAI EXTRA_AI_OPTS=
 }
 
 model_chatgpt5_codex() {
@@ -182,7 +182,7 @@ model_grok_code() {
 }
 
 model_grok() {
-  export DEFAULT_MODEL=grok-4-fast-non-reasoning DEFAULT_VENDOR=GrokAI \
+  export DEFAULT_MODEL=grok-4-0709 DEFAULT_VENDOR=GrokAI \
     EXTRA_AI_OPTS=
 }
 

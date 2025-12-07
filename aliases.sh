@@ -4,13 +4,10 @@
 alias aig=ai_general_question
 alias aigp=ai_general_prompt
 alias aiq=ai_devops_question
-alias aic=ai_chat
-alias aicc=ai_chat_command
 alias aicmd=ai_cmd
-alias aico=ai_code
-alias aicoc=ai_code_continue
-alias aicob=ai_code_bash
-alias aicog=ai_code_go
+alias aic=ai_code
+alias aicb=ai_code_bash
+alias aicg=ai_code_go
 alias aid=ai_doc
 alias aim=ai_multi
 alias aicm=ai_code_multi
