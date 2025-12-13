@@ -1,0 +1,37 @@
+version: "3"
+
+tasks:
+  ansible:run:
+    desc: Run Ansible playbook with dynamic tag, inventory and role file
+    vars:
+      TAG: "{{.TAG | default .tag | default \"\"}}"
+      INVENTORY: "{{.INVENTORY | default .inventory | default \"\"}}"
+      PLAYBOOK: "{{.PLAYBOOK | default .playbook | default \"site.yml\"}}"
+    preconditions:
+      - sh: 'test -n "{{.INVENTORY}}"'
+        msg: INVENTORY variable is required, pass with INVENTORY=path/to/inventory or --inventory
+    cmds:
+      - |
+        set -e
+        TAG_ARG=""
+        if [ -n "{{.TAG}}" ]; then
+          TAG_ARG="--tags {{.TAG}}"
+        fi
+        INVENTORY_ARG="--inventory {{.INVENTORY}}"
+        ansible-playbook {{.PLAYBOOK}} ${TAG_ARG} ${INVENTORY_ARG} ${ROLE_FILE_ARG}
+
+  ansible:run:ssh:
+    desc: Run ssh.yaml playbook with friclu inventory
+    cmds:
+      - task: ansible:run
+        vars:
+          INVENTORY: inventory/friclu.yaml
+          PLAYBOOK: ssh.yaml
+
+  ansible:run:scripts:
+    desc: Run ssh.yaml playbook with friclu inventory
+    cmds:
+      - task: ansible:run
+        vars:
+          INVENTORY: inventory/friclu.yaml
+          PLAYBOOK: scripts.yaml
