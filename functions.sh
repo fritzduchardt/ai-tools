@@ -154,11 +154,18 @@ model_ollama_mistral() {
 }
 
 model_claude() {
-  export DEFAULT_MODEL=claude-sonnet-4-20250514 DEFAULT_MODEL_CONTEXT_LENGTH=100000 DEFAULT_VENDOR=Anthropic EXTRA_AI_OPTS=
+  export DEFAULT_MODEL=claude-sonnet-4-5 DEFAULT_MODEL_CONTEXT_LENGTH=100000 \
+    DEFAULT_VENDOR=Anthropic EXTRA_AI_OPTS=
 }
 
 model_claude_opus() {
-  export DEFAULT_MODEL=claude-opus-4-1-20250805 DEFAULT_MODEL_CONTEXT_LENGTH=100000 DEFAULT_VENDOR=Anthropic EXTRA_AI_OPTS=
+  export DEFAULT_MODEL=claude-opus-4-5 DEFAULT_MODEL_CONTEXT_LENGTH=100000 \
+    DEFAULT_VENDOR=Anthropic EXTRA_AI_OPTS=
+}
+
+model_claude_haiku() {
+  export DEFAULT_MODEL=claude-haiku-4-5 DEFAULT_MODEL_CONTEXT_LENGTH=100000 \
+    DEFAULT_VENDOR=Anthropic EXTRA_AI_OPTS=
 }
 
 model_chatgpt_turbo() {
@@ -166,11 +173,13 @@ model_chatgpt_turbo() {
 }
 
 model_chatgpt5() {
-  export DEFAULT_MODEL=gpt-5.1 DEFAULT_MODEL_CONTEXT_LENGTH=100000 DEFAULT_VENDOR=OpenAI EXTRA_AI_OPTS=
+  export DEFAULT_MODEL=gpt-5.2 DEFAULT_MODEL_CONTEXT_LENGTH=100000 \
+    DEFAULT_VENDOR=OpenAI EXTRA_AI_OPTS=
 }
 
 model_chatgpt5_codex() {
-  export DEFAULT_MODEL=gpt-5-codex DEFAULT_MODEL_CONTEXT_LENGTH=100000 DEFAULT_VENDOR=OpenAI EXTRA_AI_OPTS=
+  export DEFAULT_MODEL=gpt-5.1-codex DEFAULT_MODEL_CONTEXT_LENGTH=100000 \
+    DEFAULT_VENDOR=OpenAI EXTRA_AI_OPTS=
 }
 
 model_deepseek() {

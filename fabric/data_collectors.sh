@@ -38,7 +38,7 @@ find_for_fabric() {
 }
 
 find_for_fabric_recursive() {
-  fd "$@" --type f
+  fd "$@" --type f -p
 }
 
 internet_for_fabric() {

@@ -90,12 +90,14 @@ fbrc() {
   fi
 
   # execute fabric
+  local context="Current directory: $PWD. Specific User Request: $prompt"
   if check_pipe_input; then
     log::debug "Data was piped into script"
-    lib::exec sed "1s#^#$prompt: #" | lib::exec $fabric_cmd | "${OUTPUT_FILTER[@]}"
+    lib::exec sed "1s#^#$context: #" | lib::exec $fabric_cmd \
+      | "${OUTPUT_FILTER[@]}"
   else
     log::debug "No data was piped into script"
-    lib::exec echo "Specific User Request: $prompt" | lib::exec $fabric_cmd \
+    lib::exec echo "$context" | lib::exec $fabric_cmd \
       | "${OUTPUT_FILTER[@]}"
   fi
 }
