@@ -6,4 +6,5 @@
 FILENAME: path/to/file.md
 
 Actual file content goes here
+- Follow the Specific User Request if provided
 {{- end -}}

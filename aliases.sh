@@ -14,6 +14,7 @@ alias aicm=ai_code_multi
 alias aicmc=ai_code_multi_chat
 alias aicmb=ai_code_multi_bash
 alias aicmg=ai_code_multi_go
+alias aicmp=ai_code_multi_python
 alias aicms=ai_code_multi_scaffold
 
 # AI directory and git commands

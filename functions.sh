@@ -57,10 +57,7 @@ ai_doc() {
 
 # generate code multiple files
 ai_multi() {
-  local pattern="$1"
-  shift 1
-  "$SCRIPT_DIR"/fabric/data_generators.sh generate_from_filelist <<<"$(ai -p \
-    "$pattern" "$@")"
+  "$SCRIPT_DIR"/fabric/data_generators.sh generate_from_filelist <<<"$(ai "$@")"
 }
 
 ai_code_multi() {
@@ -76,6 +73,11 @@ ai_code_multi_bash() {
 ai_code_multi_go() {
   "$SCRIPT_DIR"/fabric/data_generators.sh generate_from_filelist <<<"$(ai \
     -p "devops_code_go" "$@")"
+}
+
+ai_code_multi_python() {
+  "$SCRIPT_DIR"/fabric/data_generators.sh generate_from_filelist <<<"$(ai \
+    -p "devops_code_python" "$@")"
 }
 
 ai_code_multi_scaffold() {
@@ -199,12 +201,24 @@ model_mistral() {
   export DEFAULT_MODEL=codestral-latest DEFAULT_VENDOR=Mistral DEFAULT_MODEL_CONTEXT_LENGTH=100000 EXTRA_AI_OPTS=
 }
 
+model_qwen_1() {
+  export DEFAULT_MODEL=qwen3-coder:30b DEFAULT_VENDOR=Ollama \
+    DEFAULT_MODEL_CONTEXT_LENGTH=100000 EXTRA_AI_OPTS=
+}
+
+model_deep_seek() {
+  export DEFAULT_MODEL=deepseek-coder:33b DEFAULT_VENDOR=Ollama \
+    DEFAULT_MODEL_CONTEXT_LENGTH=100000 EXTRA_AI_OPTS=
+}
+
+
 model_gemini() {
   export DEFAULT_VENDOR=Gemini DEFAULT_MODEL=gemini-pro-latest DEFAULT_MODEL_CONTEXT_LENGTH=100000 EXTRA_AI_OPTS=
 }
 
 model() {
-  env | grep DEFAULT_MODEL
+  echo $DEFAULT_MODEL
+  echo $DEFAULT_VENDOR
 }
 
 # load current favorite model

@@ -90,7 +90,7 @@ fbrc() {
   fi
 
   # execute fabric
-  local context="Current directory: $PWD. Specific User Request: $prompt"
+  local context="Current model: ${DEFAULT_MODEL/./-}. Current directory: $PWD. Specific User Request: $prompt. Answer in same language as question was asked, if hard to tell, default to English"
   if check_pipe_input; then
     log::debug "Data was piped into script"
     lib::exec sed "1s#^#$context: #" | lib::exec $fabric_cmd \
